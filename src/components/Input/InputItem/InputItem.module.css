@@ -1,0 +1,10 @@
+.InputItem {
+    display: flex;
+    padding: 1.2vh;
+
+}
+
+.InputItemName {
+    width: 150px;
+    cursor: pointer;
+}
