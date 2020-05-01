@@ -3,14 +3,9 @@ import classes from './Menu.module.css';
 
 const Menu = (props) => (
     <nav>
-        <div className={classes.Menu}>Пункт 1</div>
-        <div className={classes.Menu}>Пункт 2</div>
-        <div className={classes.Menu}>Пункт 3</div>
-        <div className={classes.Menu}>Пункт 3</div>
-        <div className={classes.Menu}>Пункт 3</div>
-        <div className={classes.Menu}>Пункт 3</div>
-        <div className={classes.Menu}>Пункт 3</div>
-        <div className={classes.Menu}>Пункт 3</div>
+        <div className={classes.Menu}>Расходы</div>
+        <div className={classes.Menu}>Доходы</div>
+        <div className={classes.Menu}>Инвестиции</div>
     </nav>
 );
 

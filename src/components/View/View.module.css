@@ -1,5 +1,7 @@
 .View {
-    font-style: italic;
+    /* font-style: italic; */
     font-size: 14px;
     width: 400px;
+    padding: 0;
+    margin: 0 auto;
 }

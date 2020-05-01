@@ -1,0 +1,14 @@
+.FieldItem {
+    display: flex;
+    /* padding: 2px; */
+
+}
+
+.FieldItemName {
+    width: 150px;
+    cursor: pointer;
+}
+
+.sum {
+    padding-left: 10px;
+}

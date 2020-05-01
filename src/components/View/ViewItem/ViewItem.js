@@ -5,11 +5,10 @@ const ViewItem = (props) => {
     // console.log('ViewItem', props.date);
 
     return (
-        <li
-            className={classes.ViewItem}
-            
-        >
-            {props.input.date} - {props.input.price}
+        <li className={classes.ViewItem}>
+            {props.input
+                ? `${props.input.id} - ${props.input.date} - ${props.input.price}`
+                : null}
         </li>
     );
 };

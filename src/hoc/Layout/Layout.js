@@ -3,27 +3,38 @@ import classes from './Layout.module.css';
 import { NavLink } from 'react-router-dom';
 
 class Layout extends React.Component {
-    onClickHeader() {
-        console.log('To main');
-    }
 
     render() {
         return (
             <div className={classes.Layout}>
-                <h1
-                    href="yearstat"
-                    onClick={() => {
-                        this.onClickHeader();
-                    }}
-                >
-                    Учетник финансов{' '}
-                </h1>
-                <NavLink to="/yearstat" activeStyle={{ color: 'red' }}>
-                    Годовая статистика
-                </NavLink>
-                <NavLink to="/" exact activeStyle={{ color: 'red' }}>
-                    Главная
-                </NavLink>
+                <nav className={classes.header}>
+                    <h1>UberDog App</h1>
+                    <div>Финансы</div>
+                    <div>Планирование</div>
+                    <div>Заметки</div>
+                    <div>LifeUp</div>
+                </nav>
+                <header>
+                    <h2>Финансы</h2>
+                </header>
+                <nav>
+                    <NavLink to="/" exact activeClassName={classes.active}>
+                        Расходы
+                    </NavLink>
+                    <NavLink to="/income" activeClassName={classes.active}>
+                        Доходы
+                    </NavLink>
+                    <NavLink to="/invest" activeClassName={classes.active}>
+                        Инвестиции
+                    </NavLink>
+                    <NavLink
+                        to="/yearstat"
+                        activeClassName={classes.active}
+                        // activeStyle={{ color: 'red' }}
+                    >
+                        Годовая статистика
+                    </NavLink>
+                </nav>
                 <main>{this.props.children}</main>
             </div>
         );

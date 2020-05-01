@@ -6,7 +6,7 @@ const View = (props) => {
     return (
         <ul className={classes.View}>
             {props.input.map((input, index) => {
-                console.log('mapInput ', input);
+                // console.log('mapInput ', input);
                 
                 return <ViewItem key={index} input={input} />;
             })}

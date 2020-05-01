@@ -1,20 +1,21 @@
 import React from 'react';
-import classes from './Input.module.css';
-import InputItem from './InputItem/InputItem';
+import classes from './Field.module.css';
+import FieldItem from './FieldItem/FieldItem';
 
-const Input = (props) => {
+const Field = (props) => {
     return (
-        <div className={classes.Input}>
+        <div className={classes.Field}>
             {/* <h2>Введите расходы</h2> */}
             {props.input.map((input, index) => {
                 return (
-                    <InputItem
+                    <FieldItem
                         key={index}
                         id={input.id}
                         nameCategory={input.nameCategory}
                         sumCurrent={input.sumCurrent}
                         currentInput={input.currentInput}
-                        onInputEnter={props.onInputEnter}
+                        onChange={props.onChange}
+                        onInputClick={props.onInputClick}
                         onNameCategoryClick={props.onNameCategoryClick}
 
                     />
@@ -24,4 +25,4 @@ const Input = (props) => {
     );
 };
 
-export default Input;
+export default Field;
