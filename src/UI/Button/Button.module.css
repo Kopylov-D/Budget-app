@@ -36,3 +36,9 @@
     background: #2884f6;
     color: #fff;
 }
+
+.delete {
+    padding: 2px 2px;
+    background: rgba(240, 87, 108, 1);
+    color: #fff;
+}

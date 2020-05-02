@@ -7,8 +7,14 @@ const View = (props) => {
         <ul className={classes.View}>
             {props.input.map((input, index) => {
                 // console.log('mapInput ', input);
-                
-                return <ViewItem key={index} input={input} />;
+
+                return (
+                    <ViewItem
+                        key={index}
+                        input={input}
+                        onDeleteButtonClick={props.onDeleteButtonClick}
+                    />
+                );
             })}
         </ul>
     );

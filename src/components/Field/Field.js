@@ -17,7 +17,7 @@ const Field = (props) => {
                         onChange={props.onChange}
                         onInputClick={props.onInputClick}
                         onNameCategoryClick={props.onNameCategoryClick}
-
+                        onSubmit={props.onSubmit}
                     />
                 );
             })}

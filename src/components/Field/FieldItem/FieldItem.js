@@ -12,8 +12,9 @@ const FieldItem = (props) => {
                 {props.nameCategory}
             </div>
             <Input
-                onChange={props.onChange}
                 id={props.id}
+                onChange={props.onChange}
+                onSubmit={props.onSubmit}
                 onInputClick={props.onInputClick}
             />
             <div>{props.currentInput}</div>

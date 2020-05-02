@@ -16,14 +16,16 @@ const Input = (props) => {
 
     return (
         <div className={cls.join(' ')}>
-            <input
-                type="text"
-                id={htmlFor}
-                onChange={(event) => props.onChange(event, props.id)}
-                onClick={() => props.onInputClick(props.id)}
-            />
+            <form onSubmit={(event) => props.onSubmit(event, props.id)}>
+                <input
+                    type="text"
+                    id={htmlFor}
+                    onChange={(event) => props.onChange(event, props.id)}
+                    onClick={() => props.onInputClick(props.id)}
+                />
+            </form>
 
-            {isInvalid(props)? (
+            {isInvalid(props) ? (
                 <span>{props.errorMessage || 'Неверное значение'}</span>
             ) : null}
         </div>
