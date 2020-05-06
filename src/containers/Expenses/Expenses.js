@@ -3,11 +3,18 @@ import classes from './Expenses.module.css';
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
 import Button from '../../UI/Button/Button';
+import Modal from '../../UI/Modal/Modal';
 
 class Expenses extends Component {
     state = {
         activeInput: 0,
-        test: null,
+        modal: {
+            isOpen: false,
+            title: 'Введите имя категории',
+            inputValue: '',
+            style: 'modal',
+            currentCategoryId: null,
+        },
         expensesSum: 5000,
         sumCash: 8000,
         input: [
@@ -38,18 +45,15 @@ class Expenses extends Component {
         ],
     };
 
-    onChangeHandler = (event, id) => {
-        const input = [...this.state.input];
-        // const elementData = { ...input[id - 1] };
+    refreshSum(arr) {
+        let newArr = arr.reduce(function (sum, current) {
+            let p = current.price;
+            return sum + p;
+        }, 0);
+        return newArr;
+    }
 
-        input.currenInput = event.target.value;
-        input.sumCurrent += +event.target.value;
-
-        this.setState({
-            input: input,
-        });
-        // console.log(this.state);
-    };
+    onChangeHandler = (event, id) => {};
 
     onSubmitHandler = (event, id) => {
         let number = +event.target.firstChild.value;
@@ -60,7 +64,7 @@ class Expenses extends Component {
         const newDataId = elementData.data.length + 1;
 
         const newData = {
-            date: 'date',
+            date: new Date(),
             price: number,
             id: newDataId,
         };
@@ -94,44 +98,88 @@ class Expenses extends Component {
     };
 
     onNameCategoryClickHandler = (inputId) => {
-        const newName = prompt('Введите название категории');
-        if (newName) {
-            const input = [...this.state.input];
-            const newInputItem = { ...input[inputId - 1] };
-            newInputItem.nameCategory = newName;
+        const modal = { ...this.state.modal };
+        modal.isOpen = true;
+        modal.currentCategoryId = inputId;
 
-            input[inputId - 1] = newInputItem;
-
-            this.setState({
-                input,
-            });
-            console.log(input);
-        }
+        this.setState({
+            modal,
+        });
     };
 
-    onDeleteButtonClickHandler = (id) => {
-        console.log('Close', id);
+    onChangeModal = (event) => {
+        const modal = { ...this.state.modal };
+        const newName = event.target.value;
 
-        const ind = id - 1;
+        modal.inputValue = newName;
+
+        this.setState({
+            modal,
+        });
+
+        console.log(this.state.modal);
+    };
+
+    onSubmitModal = (event) => {
+        this.onOkModalClick();
+        event.preventDefault();
+    };
+
+    onOkModalClick = () => {
+        const modal = { ...this.state.modal };
+        const inputId = modal.currentCategoryId;
+
         const input = [...this.state.input];
-        const elementData = { ...input[ind] };
+        const newInputItem = { ...input[inputId - 1] };
 
-        console.log(elementData.data);
-        console.log(elementData);
+        if (modal.inputValue) {
+            newInputItem.nameCategory = modal.inputValue;
 
-        elementData.data.splice(ind, 1);
-        input[ind].data = elementData
+            input[inputId - 1] = newInputItem;
+        }
+
+        modal.isOpen = false;
+        modal.inputValue = '';
+
+        console.log();
+
+        this.setState({
+            input,
+            modal,
+        });
+    };
+
+    onCancelModalClick = () => {
+        console.log('Modal cancel');
+        const modal = { ...this.state.modal };
+        modal.isOpen = false;
+
+        this.setState({
+            modal,
+        });
+    };
+
+    onDeleteButtonClickHandler = (id, inputId) => {
+        const input = [...this.state.input];
+        const elementData = { ...input[inputId] };
+        const data = elementData.data;
+
+        data.splice(id, 1);
+
+        let sumCurrent = data.reduce(function (sum, current) {
+            return sum + current.price;
+        }, 0);
+
+        elementData.sumCurrent = sumCurrent;
+        input[inputId].sumCurrent = sumCurrent;
 
         this.setState({
             input,
         });
-        console.log(elementData.data);
-        // elementData.data.splice(id, 1);
     };
 
     onTestButtonClickHandler = (id) => {
         console.log(this.state);
-        console.log(id);
     };
 
     renderInput() {
@@ -162,7 +210,8 @@ class Expenses extends Component {
                         onNameCategoryClick={this.onNameCategoryClickHandler}
                     />
                     <View
-                        input={this.state.input[this.state.activeInput].data}
+                        inputId={this.state.activeInput}
+                        data={this.state.input[this.state.activeInput].data}
                         onNameCategoryClick={this.onNameCategoryClickHandler}
                         onDeleteButtonClick={this.onDeleteButtonClickHandler}
                     />
@@ -176,6 +225,13 @@ class Expenses extends Component {
                 <Button type="primary" onClick={() => this.renderInput()}>
                     Добавить
                 </Button>
+                <Modal
+                    modal={this.state.modal}
+                    onOkModalClick={this.onOkModalClick}
+                    onCancelModalClick={this.onCancelModalClick}
+                    onChangeModal={this.onChangeModal}
+                    onSubmitModal={this.onSubmitModal}
+                />
             </div>
         );
     }

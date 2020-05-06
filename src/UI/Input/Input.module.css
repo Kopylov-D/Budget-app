@@ -13,10 +13,19 @@
     transition: all 300ms ease-in-out;
 }
 
-.invalid { 
+.invalid {
     border: 2px solid red;
 }
 
 .Input span {
     color: red;
+}
+
+/* Для модального */
+
+.modal {
+}
+
+.modal input {
+    width: 300px;
 }

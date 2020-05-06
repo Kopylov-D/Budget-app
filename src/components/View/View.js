@@ -5,13 +5,15 @@ import ViewItem from './ViewItem/ViewItem';
 const View = (props) => {
     return (
         <ul className={classes.View}>
-            {props.input.map((input, index) => {
+            {props.data.map((data, index) => {
                 // console.log('mapInput ', input);
 
                 return (
                     <ViewItem
                         key={index}
-                        input={input}
+                        id={index}
+                        inputId={props.inputId}
+                        data={data}
                         onDeleteButtonClick={props.onDeleteButtonClick}
                     />
                 );
