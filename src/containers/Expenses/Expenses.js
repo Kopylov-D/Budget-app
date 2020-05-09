@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import classes from './Expenses.module.css';
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
+import Month from '../../components/Navigation/Month/navMonth';
 import Button from '../../UI/Button/Button';
 import Modal from '../../UI/Modal/Modal';
+import axios from '../../axios/axios-expenses';
+import Loader from '../../UI/Loader/Loader';
 
 class Expenses extends Component {
     state = {
+        currentMonthId: 0,
         activeInput: 0,
+        openView: false,
+        loading: true,
         modal: {
             isOpen: false,
             title: 'Введите имя категории',
@@ -15,35 +21,54 @@ class Expenses extends Component {
             style: 'modal',
             currentCategoryId: null,
         },
-        expensesSum: 5000,
-        sumCash: 8000,
+        expensesSum: 0,
+        sumCash: 0,
         input: [
             {
                 id: 1,
-                nameCategory: 'Продукты',
-                sumCurrent: 10,
-                currenInput: null,
-                currenInputId: null,
+                monthId: 1,
+                nameCategory: 'Новая категория',
+                sumCurrent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                // currenInput: null,
+                // currenInputId: null,
                 data: [
                     // { date: '12/01/2020', price: 5, id: 1 },
                     // { date: '23/01/2020', price: 2, id: 2 },
                     // { date: '25/01/2020', price: 3, id: 3 },
                 ],
             },
-            {
-                id: 2,
-                nameCategory: 'Одежда',
-                sumCurrent: null,
-                currenInput: null,
-                currenInputId: null,
-                data: [
-                    { date: '12/01/2021', price: 12, id: 1 },
-                    { date: '23/01/2021', price: 16, id: 2 },
-                    { date: '25/01/2021', price: 25, id: 3 },
-                ],
-            },
         ],
     };
+
+    async componentDidMount() {
+        try {
+            const response = await axios.get('/state.json');
+            const state = response.data;
+            console.log(state);
+
+            console.log(this.state);
+
+            // Object.entries(response.data).forEach((key, index) => {
+            //     console.log(key, index);
+
+            // })
+
+            this.setState(state);
+            this.setState({ loading: false });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // componentDidUpdate() {
+    //     this.refresh()
+    // }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('should');
+    //     this.refresh()
+    //     return nextState !== this.state;
+    // }
 
     refreshSum(arr) {
         let newArr = arr.reduce(function (sum, current) {
@@ -53,6 +78,15 @@ class Expenses extends Component {
         return newArr;
     }
 
+    refresh = () => {
+        try {
+            const response = axios.patch('/state.json', this.state);
+            console.log('sync');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     onChangeHandler = (event, id) => {};
 
     onSubmitHandler = (event, id) => {
@@ -61,39 +95,69 @@ class Expenses extends Component {
         const ind = id - 1;
         const input = [...this.state.input];
         const elementData = { ...input[ind] };
-        const newDataId = elementData.data.length + 1;
+        console.log(elementData);
+
+        // const newDataId = elementData.data.length + 1;
 
         const newData = {
-            date: new Date(),
+            date: new Date().toLocaleDateString(),
             price: number,
-            id: newDataId,
+            // id: new Date().getMonth() + 1,
+            id: this.state.currentMonthId,
         };
         const data = elementData.data;
         data.push(newData);
 
         //сумма
 
-        let sumCurrent = data.reduce(function (sum, current) {
-            return sum + current.price;
+        let newSumCurrent = data.reduce((sum, current) => {
+            if (current.id === this.state.currentMonthId) {
+                return sum + current.price;
+            } else {
+                return null;
+            }
         }, 0);
 
-        elementData.sumCurrent = sumCurrent;
-        input[ind].sumCurrent = sumCurrent;
+        const t = this.state.currentMonthId;
+        elementData.sumCurrent.splice(t, 1, newSumCurrent);
+
+        input[ind].sumCurrent = elementData.sumCurrent;
 
         this.setState({
             input,
         });
 
         event.target.firstChild.value = '';
+        console.log(newData);
 
         event.preventDefault();
     };
 
     refreshView = (inputId) => {
-        console.log('Аргумент функции: ', inputId - 1);
+        // const input = [...this.state.input];
+        // const elementData = { ...input[inputId] };
+        // const data = elementData.data;
+
+        // let sumCurrent = data.reduce((sum, current) => {
+        //     if (current.id === this.state.currentMonthId) {
+        //         return sum + current.price;
+        //     } else {
+        //         return null;
+        //     }
+        // }, 0);
 
         this.setState({
             activeInput: inputId - 1,
+            openView: true,
+        });
+    };
+
+    onMonthClickHandler = (monthId) => {
+        console.log('Month Id', monthId);
+
+        this.setState({
+            currentMonthId: monthId,
+            openView: false,
         });
     };
 
@@ -141,8 +205,6 @@ class Expenses extends Component {
         modal.isOpen = false;
         modal.inputValue = '';
 
-        console.log();
-
         this.setState({
             input,
             modal,
@@ -159,6 +221,22 @@ class Expenses extends Component {
         });
     };
 
+    onDeleteModalClickHandler = () => {
+        const modal = { ...this.state.modal };
+        const input = [...this.state.input];
+
+        const inputId = modal.currentCategoryId;
+
+        const delCategory = input.findIndex((item) => item.id === inputId);
+        input.splice(delCategory, 1);
+
+        this.setState({
+            input,
+        });
+
+        this.onCancelModalClick();
+    };
+
     onDeleteButtonClickHandler = (id, inputId) => {
         const input = [...this.state.input];
         const elementData = { ...input[inputId] };
@@ -166,12 +244,17 @@ class Expenses extends Component {
 
         data.splice(id, 1);
 
-        let sumCurrent = data.reduce(function (sum, current) {
-            return sum + current.price;
+        let newSumCurrent = data.reduce((sum, current) => {
+            if (current.id === this.state.currentMonthId) {
+                return sum + current.price;
+            } else {
+                return null;
+            }
         }, 0);
 
-        elementData.sumCurrent = sumCurrent;
-        input[inputId].sumCurrent = sumCurrent;
+        const t = this.state.currentMonthId;
+        elementData.sumCurrent.splice(t, 1, newSumCurrent);
+        input[inputId].sumCurrent = elementData.sumCurrent;
 
         this.setState({
             input,
@@ -179,16 +262,29 @@ class Expenses extends Component {
     };
 
     onTestButtonClickHandler = (id) => {
-        console.log(this.state);
+        this.setState({
+            openView: false,
+        });
+        try {
+            axios.patch(
+                'https://moneykeep-c1c8a.firebaseio.com/state.json',
+                this.state
+            );
+            console.log('sync');
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     renderInput() {
         const input = [...this.state.input];
         const newInputItem = { ...input[0] };
+        const monthId = this.state.currentMonthId;
         const id = input.length + 1;
         newInputItem.id = id;
+        newInputItem.monthId = monthId;
         newInputItem.nameCategory = 'Новая категория';
-        newInputItem.sumCurrent = null;
+        newInputItem.sumCurrent = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         newInputItem.data = [];
         input.push(newInputItem);
 
@@ -200,28 +296,48 @@ class Expenses extends Component {
     render() {
         return (
             <div className={classes.Expenses}>
-                <div className={classes.workArea}>
-                    <Field
-                        input={this.state.input}
-                        activeInput={this.state.activeInput}
-                        onChange={this.onChangeHandler}
-                        onSubmit={this.onSubmitHandler}
-                        onInputClick={this.refreshView}
-                        onNameCategoryClick={this.onNameCategoryClickHandler}
+                <React.Fragment>
+                    <Month
+                        onClick={this.onMonthClickHandler}
+                        currentMonthId={this.state.currentMonthId}
                     />
-                    <View
-                        inputId={this.state.activeInput}
-                        data={this.state.input[this.state.activeInput].data}
-                        onNameCategoryClick={this.onNameCategoryClickHandler}
-                        onDeleteButtonClick={this.onDeleteButtonClickHandler}
-                    />
-                    <Button
-                        type="success"
-                        onClick={this.onTestButtonClickHandler}
-                    >
-                        ВЫВЕСТИ КОНСОЛЬ
-                    </Button>
-                </div>
+                </React.Fragment>
+                {this.state.loading ? (
+                    <Loader />
+                ) : (
+                    <div className={classes.workArea}>
+                        <Field
+                            input={this.state.input}
+                            activeInput={this.state.activeInput}
+                            currentMonthId={this.state.currentMonthId}
+                            onChange={this.onChangeHandler}
+                            onSubmit={this.onSubmitHandler}
+                            onInputClick={this.refreshView}
+                            onNameCategoryClick={
+                                this.onNameCategoryClickHandler
+                            }
+                        />
+                        <View
+                            inputId={this.state.activeInput}
+                            currentMonthId={this.state.currentMonthId}
+                            openView={this.state.openView}
+                            data={this.state.input[this.state.activeInput].data}
+                            onNameCategoryClick={
+                                this.onNameCategoryClickHandler
+                            }
+                            onDeleteButtonClick={
+                                this.onDeleteButtonClickHandler
+                            }
+                        />
+                        <Button
+                            type="success"
+                            onClick={this.onTestButtonClickHandler}
+                        >
+                            Синхронизация
+                        </Button>
+                    </div>
+                )}
+
                 <Button type="primary" onClick={() => this.renderInput()}>
                     Добавить
                 </Button>
@@ -229,6 +345,7 @@ class Expenses extends Component {
                     modal={this.state.modal}
                     onOkModalClick={this.onOkModalClick}
                     onCancelModalClick={this.onCancelModalClick}
+                    onDeleteModalClick={this.onDeleteModalClickHandler}
                     onChangeModal={this.onChangeModal}
                     onSubmitModal={this.onSubmitModal}
                 />

@@ -36,6 +36,9 @@ const Modal = (props) => {
                     <Button type="primary" onClick={props.onCancelModalClick}>
                         Отмена
                     </Button>
+                    <Button type="primary" onClick={props.onDeleteModalClick}>
+                        Удалить категорию
+                    </Button>
                 </div>
             </div>
             {props.modal.isOpen ? <Backdrop onClick={props.onCancelModalClick}/> : null}

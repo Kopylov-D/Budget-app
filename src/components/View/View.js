@@ -5,19 +5,29 @@ import ViewItem from './ViewItem/ViewItem';
 const View = (props) => {
     return (
         <ul className={classes.View}>
-            {props.data.map((data, index) => {
-                // console.log('mapInput ', input);
-
-                return (
-                    <ViewItem
-                        key={index}
-                        id={index}
-                        inputId={props.inputId}
-                        data={data}
-                        onDeleteButtonClick={props.onDeleteButtonClick}
-                    />
-                );
-            })}
+            {props.data
+                ? props.data.map((data, index) => {
+                      if (
+                          data &&
+                          props.openView &&
+                          props.currentMonthId === data.id
+                      ) {
+                          return (
+                              <ViewItem
+                                  key={index}
+                                  id={index}
+                                  inputId={props.inputId}
+                                  data={data}
+                                  onDeleteButtonClick={
+                                      props.onDeleteButtonClick
+                                  }
+                              />
+                          );
+                      } else {
+                          return null;
+                      }
+                  })
+                : null}
         </ul>
     );
 };

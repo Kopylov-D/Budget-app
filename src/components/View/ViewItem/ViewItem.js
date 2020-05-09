@@ -8,7 +8,7 @@ const ViewItem = (props) => {
         <div className={classes.ViewItem}>
             <li>
                 {props.data
-                    ? `${props.id + 1} -  ${props.data.date.toLocaleDateString()} - ${props.data.price}`
+                    ? `${props.data.date} - ${props.data.price} руб.`
                     : null}
             </li>
             <Button type="delete" onClick={() => props.onDeleteButtonClick(props.id, props.inputId)}>
