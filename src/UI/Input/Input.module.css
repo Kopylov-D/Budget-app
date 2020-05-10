@@ -27,5 +27,11 @@
 }
 
 .modal input {
-    width: 300px;
+    width: 370px;
+    align-self: center;
+}
+
+.auth input {
+    width: 400px;
+    margin-bottom: 15px;
 }

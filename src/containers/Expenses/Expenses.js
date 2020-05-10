@@ -8,6 +8,8 @@ import Modal from '../../UI/Modal/Modal';
 import axios from '../../axios/axios-expenses';
 import Loader from '../../UI/Loader/Loader';
 
+
+
 class Expenses extends Component {
     state = {
         currentMonthId: 0,
@@ -44,14 +46,6 @@ class Expenses extends Component {
         try {
             const response = await axios.get('/state.json');
             const state = response.data;
-            console.log(state);
-
-            console.log(this.state);
-
-            // Object.entries(response.data).forEach((key, index) => {
-            //     console.log(key, index);
-
-            // })
 
             this.setState(state);
             this.setState({ loading: false });
@@ -70,17 +64,23 @@ class Expenses extends Component {
     //     return nextState !== this.state;
     // }
 
+    arr = [
+        { date: '12/01/2020', price: 5, id: 1 },
+        { date: '23/01/2020', price: 2, id: 2 },
+        { date: '25/01/2020', price: 3, id: 3 },
+    ];
+
     refreshSum(arr) {
-        let newArr = arr.reduce(function (sum, current) {
-            let p = current.price;
-            return sum + p;
-        }, 0);
-        return newArr;
+        let newArr = arr.map((item, index) => {
+            return item.price
+        });
+        return console.log(newArr);
+        ;
     }
 
-    refresh = () => {
+    sync = () => {
         try {
-            const response = axios.patch('/state.json', this.state);
+            axios.patch('/state.json', this.state);
             console.log('sync');
         } catch (error) {
             console.log(error);
@@ -90,15 +90,12 @@ class Expenses extends Component {
     onChangeHandler = (event, id) => {};
 
     onSubmitHandler = (event, id) => {
-        let number = +event.target.firstChild.value;
-
+        let number = +event.target.firstChild.lastChild.value;
+        console.log(event.target.firstChild.lastChild);
+        
         const ind = id - 1;
         const input = [...this.state.input];
         const elementData = { ...input[ind] };
-        console.log(elementData);
-
-        // const newDataId = elementData.data.length + 1;
-
         const newData = {
             date: new Date().toLocaleDateString(),
             price: number,
@@ -108,44 +105,28 @@ class Expenses extends Component {
         const data = elementData.data;
         data.push(newData);
 
-        //сумма
-
         let newSumCurrent = data.reduce((sum, current) => {
             if (current.id === this.state.currentMonthId) {
                 return sum + current.price;
             } else {
                 return null;
             }
-        }, 0);
+        });
 
         const t = this.state.currentMonthId;
         elementData.sumCurrent.splice(t, 1, newSumCurrent);
-
+        
         input[ind].sumCurrent = elementData.sumCurrent;
 
         this.setState({
             input,
         });
 
-        event.target.firstChild.value = '';
-        console.log(newData);
-
+        event.target.firstChild.lastChild.value = '';
         event.preventDefault();
     };
 
     refreshView = (inputId) => {
-        // const input = [...this.state.input];
-        // const elementData = { ...input[inputId] };
-        // const data = elementData.data;
-
-        // let sumCurrent = data.reduce((sum, current) => {
-        //     if (current.id === this.state.currentMonthId) {
-        //         return sum + current.price;
-        //     } else {
-        //         return null;
-        //     }
-        // }, 0);
-
         this.setState({
             activeInput: inputId - 1,
             openView: true,
@@ -262,18 +243,12 @@ class Expenses extends Component {
     };
 
     onTestButtonClickHandler = (id) => {
-        this.setState({
-            openView: false,
-        });
-        try {
-            axios.patch(
-                'https://moneykeep-c1c8a.firebaseio.com/state.json',
-                this.state
-            );
-            console.log('sync');
-        } catch (error) {
-            console.log(error);
-        }
+        // this.setState({
+        //     openView: false,
+        // });
+        // this.sync();
+
+        this.refreshSum(this.arr)
     };
 
     renderInput() {

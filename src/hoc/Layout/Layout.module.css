@@ -51,3 +51,9 @@ a.active {
 /* .active{
     color: brown;
 } */
+
+.auth {
+    /* background: grey; */
+    border-radius: 2px;
+    height: 18px;
+}

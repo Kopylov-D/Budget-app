@@ -16,7 +16,8 @@ const Input = (props) => {
 
     return (
         <div className={cls.join(' ')}>
-            <form onSubmit={(event) => props.onSubmit(event, props.id)}>
+            <label htmlFor={htmlFor}>{props.label}</label>
+            {/* <form onSubmit={(event) => props.onSubmit(event, props.id)}> */}
                 <input
                     type={inputType}
                     id={htmlFor}
@@ -24,7 +25,7 @@ const Input = (props) => {
                     onChange={(event) => props.onChange(event, props.id)}
                     onClick={() => props.onInputClick(props.id)}
                 />
-            </form>
+            {/* </form> */}
 
             {isInvalid(props) ? (
                 <span>{props.errorMessage || 'Неверное значение'}</span>

@@ -21,14 +21,16 @@ const Modal = (props) => {
         <React.Fragment>
             <div className={cls.join(' ')}>
                 <label>{props.modal.title}</label>
+                <form onSubmit={(event) => {props.onSubmitModal(event)}}>
                 <Input
                     type={props.modal.inputType}
                     style={props.modal.style}
                     onChange={props.onChangeModal}
                     onInputClick={noop}
-                    onSubmit={props.onSubmitModal}
                     value={props.modal.inputValue}
                 />
+                </form>
+               
                 <div className={classes.buttons}>
                     <Button type="success" onClick={props.onOkModalClick}>
                         Ок

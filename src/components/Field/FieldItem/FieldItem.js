@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './FieldItem.module.css';
 import Input from '../../../UI/Input/Input';
 
-
 const FieldItem = (props) => {
     return (
         <div className={classes.FieldItem}>
@@ -12,12 +11,17 @@ const FieldItem = (props) => {
             >
                 {props.nameCategory}
             </div>
-            <Input
-                id={props.id}
-                onChange={props.onChange}
-                onSubmit={props.onSubmit}
-                onInputClick={props.onInputClick}
-            />
+            <form
+                onSubmit={(event) => {
+                    props.onSubmit(event, props.id);
+                }}
+            >
+                <Input
+                    id={props.id}
+                    onChange={props.onChange}
+                    onInputClick={props.onInputClick}
+                />
+            </form>
             <div>{props.currentInput}</div>
             <div className={classes.sum}>Сумма</div>&nbsp;
             <div>{props.sumCurrent}</div>
