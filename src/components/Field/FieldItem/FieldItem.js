@@ -18,8 +18,8 @@ const FieldItem = (props) => {
             >
                 <Input
                     id={props.id}
-                    onChange={props.onChange}
-                    onInputClick={props.onInputClick}
+                    onChange={(event) => props.onChange(event, props.id)}
+                    onClick={() => props.onClick(props.id)}
                 />
             </form>
             <div>{props.currentInput}</div>

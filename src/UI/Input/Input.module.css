@@ -14,11 +14,17 @@
 }
 
 .invalid {
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 .Input span {
-    color: red;
+    color: #cccccc;
+    font-weight: bold;
+
+}
+
+.Input.invalid label {
+    color: #f01f30;
 }
 
 /* Для модального */
@@ -33,5 +39,8 @@
 
 .auth input {
     width: 400px;
-    margin-bottom: 15px;
+    margin: 10px 0;
+}
+.auth button {
+
 }
