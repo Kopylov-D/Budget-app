@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
-import Expenses from '../Expenses/Expenses';
+// import Expenses from '../Expenses/Expenses';
+import { Redirect } from 'react-router-dom';
 
 export default class Income extends Component {
   state = {
     expenses: false,
   };
 
-  componentDidMount() {
-    //   this.setState({
-    //       expenses: false
-    //   })
-    //   console.log('income');
-      console.log(this.state);
-      
-  }
-  
+  // render() {
+  //   return <Expenses expenses={this.state.expenses} />;
+  // }
+
   render() {
-    return <Expenses expenses={this.state.expenses} />;
+    return <Redirect to={'/expenses'} />;
   }
 }
-
-

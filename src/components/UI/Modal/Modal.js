@@ -9,6 +9,8 @@ const Modal = (props) => {
 
   // renderButtons = () => {};
 
+  // inputRef.current.focus()
+
   const cls = [classes.Modal];
 
   if (!props.modal.isOpen) {
@@ -16,6 +18,8 @@ const Modal = (props) => {
   }
 
   return (
+  // inputRef.current.focus()
+
     <React.Fragment>
       <div className={cls.join(' ')}>
         <label>{props.modal.title}</label>

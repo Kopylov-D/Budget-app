@@ -3,10 +3,10 @@ import classes from './Expenses.module.css';
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
 import Month from '../../components/Navigation/Month/navMonth';
-import Button from '../../UI/Button/Button';
-import Modal from '../../UI/Modal/Modal';
+import Button from '../../components/UI/Button/Button';
+import Modal from '../../components/UI/Modal/Modal';
 import axios from '../../axios/axios-expenses';
-import Loader from '../../UI/Loader/Loader';
+import Loader from '../../components/UI/Loader/Loader';
 
 class Expenses extends Component {
   state = {
@@ -43,6 +43,8 @@ class Expenses extends Component {
       },
     ],
   };
+
+ inputRef = React.createRef()
 
   async componentDidMount() {
     try {
@@ -332,6 +334,7 @@ class Expenses extends Component {
           onDeleteModalClick={this.onDeleteModalClickHandler}
           onChangeModal={this.onChangeModal}
           onSubmitModal={this.onSubmitModal}
+          ref={this.inputRef}
         />
       </div>
     );

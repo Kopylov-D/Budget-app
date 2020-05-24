@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './FieldItem.module.css';
-import Input from '../../../UI/Input/Input';
+import Input from '../../UI/Input/Input';
 
 const FieldItem = (props) => {
     return (
