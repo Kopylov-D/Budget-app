@@ -149,8 +149,6 @@ class Expenses extends Component {
   };
 
   onMonthClickHandler = (monthId) => {
-    // console.log('Month Id', monthId);
-
     this.setState({
       currentMonthId: monthId,
       openView: false,

@@ -8,7 +8,7 @@ import { auth } from '../../store/actions/auth';
 
 class Auth extends Component {
   state = {
-    // style: 'auth',
+    style: 'auth',
     isFormValid: false,
     formControls: {
       email: {
