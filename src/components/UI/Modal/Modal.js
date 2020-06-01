@@ -17,11 +17,19 @@ const Modal = (props) => {
     cls.push(classes.close);
   }
 
+  const Esc = (event) => {
+    if (event.key === 'Escape') {
+      console.log('event');
+    }
+
+    console.log('event');
+  };
+
   return (
-  // inputRef.current.focus()
+    // inputRef.current.focus()
 
     <React.Fragment>
-      <div className={cls.join(' ')}>
+      <div className={cls.join(' ')} onKeyPress={Esc}>
         <label>{props.modal.title}</label>
         <form
           onSubmit={(event) => {

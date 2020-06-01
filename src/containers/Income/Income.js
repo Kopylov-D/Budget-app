@@ -12,6 +12,6 @@ export default class Income extends Component {
   // }
 
   render() {
-    return <Redirect to={'/expenses'} />;
+    return <Redirect to={'/expenses'} expenses={this.state.expenses}/>;
   }
 }

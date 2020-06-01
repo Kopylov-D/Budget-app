@@ -44,7 +44,7 @@ class Expenses extends Component {
     ],
   };
 
- inputRef = React.createRef()
+  inputRef = React.createRef();
 
   async componentDidMount() {
     try {
@@ -62,14 +62,14 @@ class Expenses extends Component {
       console.log(this.props.match.path);
       this.setState({
         expenses: false,
-        openView: false
+        openView: false,
       });
     } else if (this.props.match.path === '/' && this.state.expenses === false) {
       console.log(this.props.match.path);
 
       this.setState({
         expenses: true,
-        openView: false
+        openView: false,
       });
     }
   }
@@ -149,7 +149,7 @@ class Expenses extends Component {
   };
 
   onMonthClickHandler = (monthId) => {
-    console.log('Month Id', monthId);
+    // console.log('Month Id', monthId);
 
     this.setState({
       currentMonthId: monthId,
@@ -285,6 +285,21 @@ class Expenses extends Component {
     });
   }
 
+  onEsc(event) {
+    if (event.key !== 'Escape') {
+      return;
+    }
+    console.log('event go');
+    
+
+    const modal = { ...this.state.modal };
+    modal.isOpen = false;
+
+    this.setState({
+      modal,
+    });
+  }
+
   render() {
     return (
       <div className={classes.Expenses}>
@@ -334,6 +349,7 @@ class Expenses extends Component {
           onDeleteModalClick={this.onDeleteModalClickHandler}
           onChangeModal={this.onChangeModal}
           onSubmitModal={this.onSubmitModal}
+          onKeyPress={this.onEsc}
           ref={this.inputRef}
         />
       </div>

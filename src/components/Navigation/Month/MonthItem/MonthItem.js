@@ -1,8 +1,6 @@
 import React from 'react';
 
 const MonthItem = (props) => {
-    console.log(props);
-    
     const styles = {
         padding: '5px',
     };
