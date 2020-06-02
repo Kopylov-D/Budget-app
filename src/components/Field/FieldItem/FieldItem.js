@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import classes from './FieldItem.module.css';
 import Input from '../../UI/Input/Input';
-import { createControl } from '../../../form/formFramework';
+import { createControl, validate } from '../../../form/formFramework';
 
 const FieldItem = (props) => {
-  const { control } = useState(
+  const [control, setControl] = useState(
     createControl(
       {
         errorMessage: 'Неверный ввод',
       },
       { required: true }
     )
+
     // style: 'auth',
     // isFormValid: false,
     // value: '',
@@ -25,6 +26,20 @@ const FieldItem = (props) => {
     // },
   );
 
+  const [value, setValue] = useState('');
+
+  const onKeyEnter = (event) => {
+    if (event.key !== 'Enter') {
+      console.log(value);
+      console.log(control);
+      setControl({touched: true});
+
+      
+    } else {
+      setControl({touched: true});
+    }
+  };
+
   return (
     <div className={classes.FieldItem}>
       <div
@@ -35,21 +50,22 @@ const FieldItem = (props) => {
       </div>
       <form
         onSubmit={(event) => {
-          props.onSubmit(event, props.id);
+          props.onSubmit(event, props.id, control.valid);
         }}
       >
         <Input
           id={props.id}
-        //   key={controlName + index}
-        //   style={this.state.style}
-          type={control.type}
+          // key={controlName + index}
+          //   style={this.state.style}
+          // type={control.type}
           label={control.label}
-          value={control.value}
+          // value={control.value}
           valid={control.valid}
           touched={control.touched}
           shouldValidate={!!control.validation}
           errorMessage={control.errorMessage}
-          onChange={(event) => props.onChange(event, props.id)}
+          onChange={(event) => setValue(event.target.value)}
+          onKeyPress={onKeyEnter}
           onClick={() => props.onClick(props.id)}
         />
       </form>

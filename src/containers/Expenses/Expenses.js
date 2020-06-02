@@ -44,8 +44,6 @@ class Expenses extends Component {
     ],
   };
 
-  inputRef = React.createRef();
-
   async componentDidMount() {
     try {
       const response = await axios.get('/state.json');
@@ -104,7 +102,12 @@ class Expenses extends Component {
 
   onChangeHandler = (event, id) => {};
 
-  onSubmitHandler = (event, id) => {
+  onSubmitHandler = (event, id, valid) => {
+    event.preventDefault();
+   
+    if (valid) {
+      return
+    } 
     const number = +event.target.firstChild.lastChild.value;
     console.log(number, id);
 
@@ -138,7 +141,6 @@ class Expenses extends Component {
     });
 
     event.target.firstChild.lastChild.value = '';
-    event.preventDefault();
   };
 
   refreshView = (inputId) => {

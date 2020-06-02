@@ -10,13 +10,6 @@ const Input = (props) => {
   const cls = [classes.Input, classes[props.style]];
   const htmlFor = `${inputType}-${Math.random()}`;
 
-  // let inputRef = React.createRef()
-  // console.log(inputRef);
-
-
-  
-
-
   if (isInvalid(props)) {
     cls.push(classes.invalid);
   }
@@ -30,7 +23,7 @@ const Input = (props) => {
         value={props.value}
         onChange={props.onChange}
         onClick={props.onClick}
-        // ref={props.inputRef}
+        onKeyPress={props.onKeyPress}
       />
 
       {isInvalid(props) ? (
