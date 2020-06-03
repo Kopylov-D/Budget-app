@@ -7,36 +7,27 @@ const FieldItem = (props) => {
   const [control, setControl] = useState(
     createControl(
       {
-        errorMessage: 'Неверный ввод',
+        noErrorMessage: true,
       },
-      { required: true }
+      { required: true, isNumber: true, notNull: true }
     )
-
-    // style: 'auth',
-    // isFormValid: false,
-    // value: '',
-    // type: 'email',
-    // label: 'Email',
-    // errorMessage: 'Введите корректный email',
-    // valid: false,
-    // touched: false,
-    // validation: {
-    //   required: true,
-    //   email: true,
-    // },
   );
-
-  const [value, setValue] = useState('');
 
   const onKeyEnter = (event) => {
     if (event.key !== 'Enter') {
-      console.log(value);
-      console.log(control);
-      setControl({touched: true});
-
-      
+      return;
     } else {
-      setControl({touched: true});
+      const value = event.target.value
+      setControl({
+        ...control,
+        value,
+        touched: true,
+        valid: validate(value, control.validation),
+      });
+      if (!control.valid) {
+        console.log('inValid');
+      }
+      event.target.value = '';
     }
   };
 
@@ -50,21 +41,18 @@ const FieldItem = (props) => {
       </div>
       <form
         onSubmit={(event) => {
-          props.onSubmit(event, props.id, control.valid);
+          props.onSubmit(event, props.id, control.valid, control.value);
         }}
       >
         <Input
           id={props.id}
-          // key={controlName + index}
-          //   style={this.state.style}
-          // type={control.type}
           label={control.label}
-          // value={control.value}
           valid={control.valid}
           touched={control.touched}
           shouldValidate={!!control.validation}
           errorMessage={control.errorMessage}
-          onChange={(event) => setValue(event.target.value)}
+          noErrorMessage={control.noErrorMessage}
+          // onChange={(event) => setValue(event.target.value)}
           onKeyPress={onKeyEnter}
           onClick={() => props.onClick(props.id)}
         />

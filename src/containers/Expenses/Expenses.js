@@ -102,14 +102,14 @@ class Expenses extends Component {
 
   onChangeHandler = (event, id) => {};
 
-  onSubmitHandler = (event, id, valid) => {
+  onSubmitHandler = (event, id, valid, value) => {
     event.preventDefault();
-   
-    if (valid) {
-      return
-    } 
-    const number = +event.target.firstChild.lastChild.value;
-    console.log(number, id);
+
+    if (!valid) {
+      return;
+    }
+    // const number = +event.target.firstChild.lastChild.value;
+    const number = +value;
 
     const ind = id - 1;
     const input = [...this.state.input];
@@ -139,8 +139,6 @@ class Expenses extends Component {
     this.setState({
       input,
     });
-
-    event.target.firstChild.lastChild.value = '';
   };
 
   refreshView = (inputId) => {
@@ -290,7 +288,6 @@ class Expenses extends Component {
       return;
     }
     console.log('event go');
-    
 
     const modal = { ...this.state.modal };
     modal.isOpen = false;

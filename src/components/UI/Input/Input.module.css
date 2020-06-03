@@ -18,9 +18,8 @@
 }
 
 .Input span {
-    color: #cccccc;
-    font-weight: bold;
-
+    color: #f01f30;
+    /* font-weight: bold; */
 }
 
 .Input.invalid label {

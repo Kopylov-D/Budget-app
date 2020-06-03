@@ -26,7 +26,7 @@ const Input = (props) => {
         onKeyPress={props.onKeyPress}
       />
 
-      {isInvalid(props) ? (
+      {isInvalid(props) && !props.noErrorMessage ? (
         <span>{props.errorMessage || 'Неверное значение'}</span>
       ) : null}
     </div>
