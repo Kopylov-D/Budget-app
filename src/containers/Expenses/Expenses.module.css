@@ -1,5 +1,6 @@
 .Expenses {
     height: max-content;
+    /* min-height: 250px; */
     max-width: 100%;
     background: #ffffff;
     color: black;
@@ -15,5 +16,6 @@ header {
     align-items: flex-start;
     margin: 10px auto;
     padding: 5px;
+    min-height: 150px;
     /* border: 2px solid #cccccc; */
 }

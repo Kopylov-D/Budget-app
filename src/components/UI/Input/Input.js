@@ -1,8 +1,8 @@
 import React from 'react';
 import classes from './Input.module.css';
 
-function isInvalid({ valid, touched, shouldValidate }) {
-  return !valid && shouldValidate && touched;
+function isInvalid({ valid, touched, shouldValidate, noErrorMessage }) {
+  return !valid && shouldValidate && touched && !noErrorMessage;
 }
 
 const Input = (props) => {
@@ -26,7 +26,7 @@ const Input = (props) => {
         onKeyPress={props.onKeyPress}
       />
 
-      {isInvalid(props) && !props.noErrorMessage ? (
+      {isInvalid(props) ? (
         <span>{props.errorMessage || 'Неверное значение'}</span>
       ) : null}
     </div>

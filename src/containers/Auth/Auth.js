@@ -168,13 +168,14 @@ import { auth } from '../../store/actions/auth';
 
 class Auth extends Component {
   state = {
+    style: 'auth',
     isFormValid: false,
     formControls: {
       email: {
         value: '',
         type: 'email',
         label: 'Email',
-        errorMessage: 'Р’РІРµРґРёС‚Рµ РєРѕСЂСЂРµРєС‚РЅС‹Р№ email',
+        errorMessage: 'Введите корректный email',
         valid: false,
         touched: false,
         validation: {
@@ -185,8 +186,8 @@ class Auth extends Component {
       password: {
         value: '',
         type: 'password',
-        label: 'РџР°СЂРѕР»СЊ',
-        errorMessage: 'Р’РІРµРґРёС‚Рµ РєРѕСЂСЂРµРєС‚РЅС‹Р№ РїР°СЂРѕР»СЊ',
+        label: 'Пароль',
+        errorMessage: 'Введите корректный пароль',
         valid: false,
         touched: false,
         validation: {
@@ -267,6 +268,7 @@ class Auth extends Component {
       return (
         <Input
           key={controlName + index}
+          style={this.state.style}
           type={control.type}
           value={control.value}
           valid={control.valid}
@@ -284,7 +286,7 @@ class Auth extends Component {
     return (
       <div className={classes.Auth}>
         <div>
-          <h1>РђРІС‚РѕСЂРёР·Р°С†РёСЏ</h1>
+          <h1>Авторизация</h1>
 
           <form onSubmit={this.submitHandler} className={classes.AuthForm}>
             {this.renderInputs()}
@@ -294,7 +296,7 @@ class Auth extends Component {
               onClick={this.loginHandler}
               disabled={!this.state.isFormValid}
             >
-              Р’РѕР№С‚Рё
+              Вход
             </Button>
 
             <Button
@@ -302,7 +304,7 @@ class Auth extends Component {
               onClick={this.registerHandler}
               disabled={!this.state.isFormValid}
             >
-              Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ
+              Регистрация
             </Button>
           </form>
         </div>

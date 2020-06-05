@@ -6,9 +6,7 @@ import { createControl, validate } from '../../../form/formFramework';
 const FieldItem = (props) => {
   const [control, setControl] = useState(
     createControl(
-      {
-        noErrorMessage: true,
-      },
+      { noErrorMessage: true },
       { required: true, isNumber: true, notNull: true }
     )
   );
@@ -17,16 +15,12 @@ const FieldItem = (props) => {
     if (event.key !== 'Enter') {
       return;
     } else {
-      const value = event.target.value
+      const value = event.target.value;
       setControl({
         ...control,
         value,
-        touched: true,
         valid: validate(value, control.validation),
       });
-      if (!control.valid) {
-        console.log('inValid');
-      }
       event.target.value = '';
     }
   };
@@ -52,7 +46,6 @@ const FieldItem = (props) => {
           shouldValidate={!!control.validation}
           errorMessage={control.errorMessage}
           noErrorMessage={control.noErrorMessage}
-          // onChange={(event) => setValue(event.target.value)}
           onKeyPress={onKeyEnter}
           onClick={() => props.onClick(props.id)}
         />

@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './BackDrop.module.css';
 
 const Backdrop = (props) => (
-    <div className={classes.Backdrop} onClick={props.onClick} />
+    <div className={classes.Backdrop} onClick={props.onClick} onKeyPress={(event) => props.onKeyPress(event)}/>
 );
 
 export default Backdrop;

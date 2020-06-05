@@ -57,44 +57,40 @@ class Expenses extends Component {
 
   componentDidUpdate() {
     if (this.props.match.path === '/income' && this.state.expenses === true) {
-      console.log(this.props.match.path);
       this.setState({
         expenses: false,
         openView: false,
       });
     } else if (this.props.match.path === '/' && this.state.expenses === false) {
-      console.log(this.props.match.path);
-
       this.setState({
         expenses: true,
         openView: false,
       });
     }
+    // this.sync()
   }
-  // this.refresh()
 
   // shouldComponentUpdate(nextProps, nextState) {
   //     console.log('should');
   //     this.refresh()
   //     return nextState !== this.state;
 
-  arr = [
-    { date: '12/01/2020', price: 5, id: 1 },
-    { date: '23/01/2020', price: 2, id: 2 },
-    { date: '25/01/2020', price: 3, id: 3 },
-  ];
-
-  refreshSum(arr) {
-    let newArr = arr.map((item, index) => {
-      return item.price;
-    });
-    return console.log(newArr);
+  sumInputArr(arr) {
+    return arr.reduce((sum, current) => {
+      if (current.id === this.state.currentMonthId) {
+        return sum + current.price;
+      } else {
+        return null;
+      }
+    }, 0);
   }
 
   sync = () => {
     try {
       axios.patch('/state.json', this.state);
       console.log('sync');
+      console.log(this.state);
+      
     } catch (error) {
       console.log(error);
     }
@@ -123,13 +119,7 @@ class Expenses extends Component {
     const data = elementData.data;
     data.push(newData);
 
-    let newSumCurrent = data.reduce((sum, current) => {
-      if (current.id === this.state.currentMonthId) {
-        return sum + current.price;
-      } else {
-        return null;
-      }
-    }, 0);
+    let newSumCurrent = this.sumInputArr(data);
 
     const t = this.state.currentMonthId;
     elementData.sumCurrent.splice(t, 1, newSumCurrent);
@@ -139,6 +129,7 @@ class Expenses extends Component {
     this.setState({
       input,
     });
+
   };
 
   refreshView = (inputId) => {
@@ -238,13 +229,7 @@ class Expenses extends Component {
 
     data.splice(id, 1);
 
-    let newSumCurrent = data.reduce((sum, current) => {
-      if (current.id === this.state.currentMonthId) {
-        return sum + current.price;
-      } else {
-        return null;
-      }
-    }, 0);
+    const newSumCurrent = this.sumInputArr(data);
 
     const t = this.state.currentMonthId;
     elementData.sumCurrent.splice(t, 1, newSumCurrent);
@@ -255,11 +240,11 @@ class Expenses extends Component {
     });
   };
 
-  onTestButtonClickHandler = (id) => {
-    this.setState({
-      openView: false,
-    });
-    this.sync();
+  onTestButtonClickHandler = (arr1) => {
+    // this.setState({
+    //   openView: false,
+    // });
+    // this.sync();
     // console.log(this.props.match.path);
   };
 
@@ -271,7 +256,6 @@ class Expenses extends Component {
     newInputItem.id = id;
     newInputItem.monthId = monthId;
     newInputItem.expenses = this.state.expenses;
-    console.log(newInputItem.expenses);
 
     newInputItem.nameCategory = 'Новая категория';
     newInputItem.sumCurrent = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -284,17 +268,16 @@ class Expenses extends Component {
   }
 
   onEsc(event) {
-    if (event.key !== 'Escape') {
-      return;
+    if (event.targetkey === 'Enter') {
+      console.log('event go');
+
+      // const modal = { ...this.state.modal };
+      // modal.isOpen = false;
+
+      // this.setState({
+      //   modal,
+      // });
     }
-    console.log('event go');
-
-    const modal = { ...this.state.modal };
-    modal.isOpen = false;
-
-    this.setState({
-      modal,
-    });
   }
 
   render() {
@@ -309,36 +292,38 @@ class Expenses extends Component {
         {this.state.loading ? (
           <Loader />
         ) : (
-          <div className={classes.workArea}>
-            <Field
-              flag={this.state.expenses}
-              input={this.state.input}
-              activeInput={this.state.activeInput}
-              currentMonthId={this.state.currentMonthId}
-              onChange={this.onChangeHandler}
-              onSubmit={this.onSubmitHandler}
-              onClick={this.refreshView}
-              onNameCategoryClick={this.onNameCategoryClickHandler}
-            />
-            <View
-              flag={this.state.expenses}
-              input={this.state.input[this.state.activeInput]}
-              inputId={this.state.activeInput}
-              currentMonthId={this.state.currentMonthId}
-              openView={this.state.openView}
-              data={this.state.input[this.state.activeInput].data}
-              onNameCategoryClick={this.onNameCategoryClickHandler}
-              onDeleteButtonClick={this.onDeleteButtonClickHandler}
-            />
-            <Button type="success" onClick={this.onTestButtonClickHandler}>
-              Синхронизация
+          <React.Fragment>
+            <div className={classes.workArea}>
+              <Field
+                flag={this.state.expenses}
+                input={this.state.input}
+                activeInput={this.state.activeInput}
+                currentMonthId={this.state.currentMonthId}
+                onChange={this.onChangeHandler}
+                onSubmit={this.onSubmitHandler}
+                onClick={this.refreshView}
+                onNameCategoryClick={this.onNameCategoryClickHandler}
+              />
+              <View
+                flag={this.state.expenses}
+                input={this.state.input[this.state.activeInput]}
+                inputId={this.state.activeInput}
+                currentMonthId={this.state.currentMonthId}
+                openView={this.state.openView}
+                data={this.state.input[this.state.activeInput].data}
+                onNameCategoryClick={this.onNameCategoryClickHandler}
+                onDeleteButtonClick={this.onDeleteButtonClickHandler}
+              />
+              <Button type="success" onClick={this.onTestButtonClickHandler}>
+                Синхронизация
+              </Button>
+            </div>
+            <Button type="primary" onClick={() => this.renderInput()}>
+              Добавить
             </Button>
-          </div>
+          </React.Fragment>
         )}
 
-        <Button type="primary" onClick={() => this.renderInput()}>
-          Добавить
-        </Button>
         <Modal
           modal={this.state.modal}
           onOkModalClick={this.onOkModalClick}
@@ -347,7 +332,6 @@ class Expenses extends Component {
           onChangeModal={this.onChangeModal}
           onSubmitModal={this.onSubmitModal}
           onKeyPress={this.onEsc}
-          ref={this.inputRef}
         />
       </div>
     );

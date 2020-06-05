@@ -3,7 +3,7 @@ import Layout from './hoc/Layout/Layout';
 import Expenses from './containers/Expenses/Expenses';
 import YearStat from './containers/YearStat/YearStat';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import Income from './containers/Income/Income';
+// import Income from './containers/Income/Income';
 import Invest from './containers/Invest/Invest';
 import Auth from './containers/Auth/Auth';
 import { connect } from 'react-redux';
@@ -18,10 +18,6 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
-        {/* <Route path="/" exact component={Expenses} /> */}
-        {/*    <Route path="/income" component={Expenses} />
-        <Route path="/invest" component={Invest} />
-        <Route path="/yearstat" component={YearStat} /> */}
         <Route path="/auth" component={Auth} />
         <Redirect to="/" />
       </Switch>
@@ -35,7 +31,9 @@ class App extends Component {
           <Route path="/invest" component={Invest} />
           <Route path="/yearstat" component={YearStat} />
           <Route path="/logout" component={Logout} />
+          
           <Redirect to="/" />
+
         </Switch>
       );
     }

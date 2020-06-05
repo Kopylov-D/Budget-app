@@ -5,11 +5,6 @@ import Button from '../Button/Button';
 import Backdrop from '../BackDrop/BackDrop';
 
 const Modal = (props) => {
-  // renderInputs = () => {};
-
-  // renderButtons = () => {};
-
-  // inputRef.current.focus()
 
   const cls = [classes.Modal];
 
@@ -17,19 +12,11 @@ const Modal = (props) => {
     cls.push(classes.close);
   }
 
-  const Esc = (event) => {
-    if (event.key === 'Escape') {
-      console.log('event');
-    }
-
-    console.log('event');
-  };
-
   return (
     // inputRef.current.focus()
 
     <React.Fragment>
-      <div className={cls.join(' ')} onKeyPress={Esc}>
+      <div className={cls.join(' ')}>
         <label>{props.modal.title}</label>
         <form
           onSubmit={(event) => {
@@ -57,7 +44,7 @@ const Modal = (props) => {
         </div>
       </div>
       {props.modal.isOpen ? (
-        <Backdrop onClick={props.onCancelModalClick} />
+        <Backdrop onClick={props.onCancelModalClick} onKeyPress={props.onKeyPress}/>
       ) : null}
     </React.Fragment>
   );

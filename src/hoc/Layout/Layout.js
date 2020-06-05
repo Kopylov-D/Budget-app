@@ -16,13 +16,23 @@ class Layout extends React.Component {
         </nav>
         <header>
           <h2>Финансы</h2>
+          { this.props.isAuthenticated ?
           <NavLink
-            to="/auth"
-            activeClassName={classes.active}
-            className={classes.auth}
-          >
-            Вход
-          </NavLink>
+          to="/logout"
+          activeClassName={classes.active}
+          className={classes.auth}
+        >
+          Выход
+        </NavLink> :
+        <NavLink
+        to="/auth"
+        activeClassName={classes.active}
+        className={classes.auth}
+      >
+        Вход
+      </NavLink>
+           }
+          
         </header>
         <nav>
           <NavLink to="/" exact activeClassName={classes.active}>
