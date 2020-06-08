@@ -5,7 +5,6 @@ import Button from '../Button/Button';
 import Backdrop from '../BackDrop/BackDrop';
 
 const Modal = (props) => {
-
   const cls = [classes.Modal];
 
   if (!props.modal.isOpen) {
@@ -13,8 +12,6 @@ const Modal = (props) => {
   }
 
   return (
-    // inputRef.current.focus()
-
     <React.Fragment>
       <div className={cls.join(' ')}>
         <label>{props.modal.title}</label>
@@ -22,6 +19,7 @@ const Modal = (props) => {
           onSubmit={(event) => {
             props.onSubmitModal(event);
           }}
+          onKeyPress={props.onKeyPress}
         >
           <Input
             type={props.modal.inputType}
@@ -44,7 +42,10 @@ const Modal = (props) => {
         </div>
       </div>
       {props.modal.isOpen ? (
-        <Backdrop onClick={props.onCancelModalClick} onKeyPress={props.onKeyPress}/>
+        <Backdrop
+          onClick={props.onCancelModalClick}
+          onKeyPress={props.onKeyPress}
+        />
       ) : null}
     </React.Fragment>
   );

@@ -70,11 +70,6 @@ class Expenses extends Component {
     // this.sync()
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //     console.log('should');
-  //     this.refresh()
-  //     return nextState !== this.state;
-
   sumInputArr(arr) {
     return arr.reduce((sum, current) => {
       if (current.id === this.state.currentMonthId) {
@@ -244,7 +239,7 @@ class Expenses extends Component {
     // this.setState({
     //   openView: false,
     // });
-    // this.sync();
+    this.sync();
     // console.log(this.props.match.path);
   };
 
@@ -268,7 +263,9 @@ class Expenses extends Component {
   }
 
   onEsc(event) {
-    if (event.targetkey === 'Enter') {
+    console.log(event);
+    
+    if (event.key === '1') {
       console.log('event go');
 
       // const modal = { ...this.state.modal };
