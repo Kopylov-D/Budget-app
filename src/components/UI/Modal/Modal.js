@@ -12,8 +12,6 @@ const Modal = (props) => {
   }
 
   return (
-    // inputRef.current.focus()
-
     <React.Fragment>
       <div className={cls.join(' ')}>
         <label>{props.modal.title}</label>
