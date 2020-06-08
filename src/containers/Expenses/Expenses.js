@@ -8,6 +8,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import axios from '../../axios/axios-expenses';
 import Loader from '../../components/UI/Loader/Loader';
 
+
 class Expenses extends Component {
   state = {
     currentMonthId: 0,
@@ -70,11 +71,6 @@ class Expenses extends Component {
     // this.sync()
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //     console.log('should');
-  //     this.refresh()
-  //     return nextState !== this.state;
-
   sumInputArr(arr) {
     return arr.reduce((sum, current) => {
       if (current.id === this.state.currentMonthId) {
@@ -90,7 +86,6 @@ class Expenses extends Component {
       axios.patch('/state.json', this.state);
       console.log('sync');
       console.log(this.state);
-      
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +124,6 @@ class Expenses extends Component {
     this.setState({
       input,
     });
-
   };
 
   refreshView = (inputId) => {
@@ -165,8 +159,6 @@ class Expenses extends Component {
     this.setState({
       modal,
     });
-
-    console.log(this.state.modal);
   };
 
   onSubmitModal = (event) => {
@@ -241,10 +233,7 @@ class Expenses extends Component {
   };
 
   onTestButtonClickHandler = (arr1) => {
-    // this.setState({
-    //   openView: false,
-    // });
-    // this.sync();
+    this.sync();
     // console.log(this.props.match.path);
   };
 
@@ -265,19 +254,6 @@ class Expenses extends Component {
     this.setState({
       input: input,
     });
-  }
-
-  onEsc(event) {
-    if (event.targetkey === 'Enter') {
-      console.log('event go');
-
-      // const modal = { ...this.state.modal };
-      // modal.isOpen = false;
-
-      // this.setState({
-      //   modal,
-      // });
-    }
   }
 
   render() {
@@ -324,15 +300,16 @@ class Expenses extends Component {
           </React.Fragment>
         )}
 
-        <Modal
-          modal={this.state.modal}
-          onOkModalClick={this.onOkModalClick}
-          onCancelModalClick={this.onCancelModalClick}
-          onDeleteModalClick={this.onDeleteModalClickHandler}
-          onChangeModal={this.onChangeModal}
-          onSubmitModal={this.onSubmitModal}
-          onKeyPress={this.onEsc}
-        />
+        {/* {this.state.modal.isOpen ? ( */}
+          <Modal
+            modal={this.state.modal}
+            onOkModalClick={this.onOkModalClick}
+            onCancelModalClick={this.onCancelModalClick}
+            onDeleteModalClick={this.onDeleteModalClickHandler}
+            onChangeModal={this.onChangeModal}
+            onSubmitModal={this.onSubmitModal}
+          />
+        {/* ) : null} */}
       </div>
     );
   }
