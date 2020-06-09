@@ -3,52 +3,59 @@ import classes from './Modal.module.css';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import Backdrop from '../BackDrop/BackDrop';
+import { CSSTransition } from 'react-transition-group';
 
 const Modal = (props) => {
   const cls = [classes.Modal];
 
-  if (!props.modal.isOpen) {
-    cls.push(classes.close);
-  }
+  // if (!props.modal.isOpen) {
+  //   cls.push(classes.close);
+  // }
 
   return (
-    <React.Fragment>
-      <div className={cls.join(' ')}>
-        <label>{props.modal.title}</label>
-        <form
-          onSubmit={(event) => {
-            props.onSubmitModal(event);
-          }}
-          onKeyUp={props.onKeyPress}
-        >
-          <Input
-            type={props.modal.inputType}
-            style={props.modal.style}
-            onChange={props.onChangeModal}
-            value={props.modal.inputValue}
-          />
-        </form>
-
-        <div className={classes.buttons}>
-          <Button type="success" onClick={props.onOkModalClick}>
-            Ок
-          </Button>
-          <Button type="primary" onClick={props.onCancelModalClick}>
-            Отмена
-          </Button>
-          <Button type="primary" onClick={props.onDeleteModalClick}>
-            Удалить категорию
-          </Button>
+    <CSSTransition
+      in={props.modal.isOpen}
+      timeout={{
+        enter: 200,
+        exit: 200,
+      }}
+      classNames="m"
+      mountOnEnter
+      unmountOnExit
+    >
+      <React.Fragment>
+        <div className={cls.join(' ')}>
+          <label>{props.modal.title}</label>
+          <form
+            onSubmit={(event) => {
+              props.onSubmitModal(event);
+            }}
+          >
+            <Input
+              type={props.modal.inputType}
+              style={props.modal.style}
+              onChange={props.onChangeModal}
+              // value={props.modal.inputValue}
+            />
+          </form>
+          <div className={classes.buttons}>
+            <Button type="success" onClick={props.onOkModalClick}>
+              Ок
+            </Button>
+            <Button type="primary" onClick={props.onCancelModalClick}>
+              Отмена
+            </Button>
+            <Button type="primary" onClick={props.onDeleteModalClick}>
+              Удалить категорию
+            </Button>
+          </div>
         </div>
-      </div>
-      {props.modal.isOpen ? (
         <Backdrop
-          // isOpen={props.modal.isOpen}
           onClick={props.onCancelModalClick}
           onKeyPress={props.onKeyPress}
         />
-      ) : null}
-    </React.Fragment>
+      </React.Fragment>
+    </CSSTransition>
   );
 };
 

@@ -13,7 +13,7 @@ const Backdrop = (props) => {
     return () => {
       document.removeEventListener('keydown', onKeypress);
     };
-  }, []);
+  }, [props]);
 
   return <div className={classes.Backdrop} onClick={props.onClick} />;
 };

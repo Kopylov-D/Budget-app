@@ -8,7 +8,6 @@ import Modal from '../../components/UI/Modal/Modal';
 import axios from '../../axios/axios-expenses';
 import Loader from '../../components/UI/Loader/Loader';
 
-
 class Expenses extends Component {
   state = {
     currentMonthId: 0,
@@ -28,7 +27,7 @@ class Expenses extends Component {
     input: [
       {
         id: 1,
-        monthId: 1,
+        monthId: null,
         expenses: true,
         nameCategory: 'Новая категория расходов',
         sumCurrent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,7 +35,7 @@ class Expenses extends Component {
       },
       {
         id: 2,
-        monthId: 1,
+        monthId: null,
         expenses: false,
         nameCategory: 'Новая категория доходов',
         sumCurrent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -62,13 +61,16 @@ class Expenses extends Component {
         expenses: false,
         openView: false,
       });
+      console.log('/income', this.state);
+      
     } else if (this.props.match.path === '/' && this.state.expenses === false) {
       this.setState({
         expenses: true,
         openView: false,
       });
+      console.log('/', this.state)
     }
-    // this.sync()
+    this.sync()
   }
 
   sumInputArr(arr) {
@@ -85,7 +87,6 @@ class Expenses extends Component {
     try {
       axios.patch('/state.json', this.state);
       console.log('sync');
-      console.log(this.state);
     } catch (error) {
       console.log(error);
     }
@@ -124,6 +125,8 @@ class Expenses extends Component {
     this.setState({
       input,
     });
+    this.sync()
+
   };
 
   refreshView = (inputId) => {
@@ -155,10 +158,11 @@ class Expenses extends Component {
     const newName = event.target.value;
 
     modal.inputValue = newName;
+    console.log(event.target);
 
-    this.setState({
-      modal,
-    });
+      this.setState({
+        modal,
+      });
   };
 
   onSubmitModal = (event) => {
@@ -232,7 +236,7 @@ class Expenses extends Component {
     });
   };
 
-  onTestButtonClickHandler = (arr1) => {
+  onTestButtonClickHandler = () => {
     this.sync();
     // console.log(this.props.match.path);
   };
@@ -299,17 +303,14 @@ class Expenses extends Component {
             </Button>
           </React.Fragment>
         )}
-
-        {/* {this.state.modal.isOpen ? ( */}
-          <Modal
-            modal={this.state.modal}
-            onOkModalClick={this.onOkModalClick}
-            onCancelModalClick={this.onCancelModalClick}
-            onDeleteModalClick={this.onDeleteModalClickHandler}
-            onChangeModal={this.onChangeModal}
-            onSubmitModal={this.onSubmitModal}
-          />
-        {/* ) : null} */}
+        <Modal
+          modal={this.state.modal}
+          onOkModalClick={this.onOkModalClick}
+          onCancelModalClick={this.onCancelModalClick}
+          onDeleteModalClick={this.onDeleteModalClickHandler}
+          onChangeModal={this.onChangeModal}
+          onSubmitModal={this.onSubmitModal}
+        />
       </div>
     );
   }
