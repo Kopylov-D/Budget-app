@@ -1,8 +1,13 @@
-import React from 'react'
-
+import React, { useState } from 'react';
 
 const YearStat = () => {
-    return <div>Статистика за год</div>;
+  const [state, setstate] = useState({});
+
+  return (
+    <div className="stat">
+      <div>Статистика за год</div>{' '}
+    </div>
+  );
 };
 
-export default YearStat
+export default YearStat;

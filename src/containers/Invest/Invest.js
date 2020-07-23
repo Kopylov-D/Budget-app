@@ -1,11 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react';
+import classes from './Invest.module.css';
+import FieldItem from '../../components/Field/FieldItem/FieldItem';
+import { connect } from 'react-redux';
 
-export default class Invest extends Component {
+function Invest(props) {
+  return (
+    <div className={classes.invest}>
+      <div>{props.counter}</div>
+    </div>
+  );
 
-    render () {
-        
-        return (
-            <div>Инвестиции</div>
-        )
-    }
 }
+
+const mapStateToProps = (state) => ({
+    counter: state.counter
+
+})
+
+
+export default connect(mapStateToProps)(Invest) 

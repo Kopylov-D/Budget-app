@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from './hoc/Layout/Layout';
-import Expenses from './containers/Expenses/Expenses';
+import Accounting from './containers/Accounting/Accounting';
 import YearStat from './containers/YearStat/YearStat';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 // import Income from './containers/Income/Income';
@@ -19,15 +19,16 @@ class App extends Component {
     let routes = (
       <Switch>
         <Route path="/auth" component={Auth} />
-        <Redirect to="/" />
+        
+        <Redirect to="/invest" />
       </Switch>
     );
 
     if (this.props.isAuthenticated) {
       routes = (
         <Switch>
-          <Route path="/" exact component={Expenses} />
-          <Route path="/income" component={Expenses} />
+          <Route path="/" exact component={Accounting} />
+          <Route path="/income" component={Accounting} />
           <Route path="/invest" component={Invest} />
           <Route path="/yearstat" component={YearStat} />
           <Route path="/logout" component={Logout} />

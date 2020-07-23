@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import classes from './Expenses.module.css';
+
+import axios from '../../axios/axios-expenses';
+
+import classes from './Accounting.module.css';
+
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
 import Month from '../../components/Navigation/Month/navMonth';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
-import axios from '../../axios/axios-expenses';
 import Loader from '../../components/UI/Loader/Loader';
 
-class Expenses extends Component {
+class Accounting extends Component {
   state = {
     currentMonthId: 0,
     expenses: true,
@@ -69,7 +72,6 @@ class Expenses extends Component {
       });
       console.log('/', this.state);
     }
-    this.sync();
   }
 
   sumInputArr(arr) {
@@ -261,12 +263,10 @@ class Expenses extends Component {
   render() {
     return (
       <div className={classes.Expenses}>
-        <React.Fragment>
-          <Month
-            onClick={this.onMonthClickHandler}
-            currentMonthId={this.state.currentMonthId}
-          />
-        </React.Fragment>
+        <Month
+          onClick={this.onMonthClickHandler}
+          currentMonthId={this.state.currentMonthId}
+        />
         {this.state.loading ? (
           <Loader />
         ) : (
@@ -314,4 +314,4 @@ class Expenses extends Component {
   }
 }
 
-export default Expenses;
+export default Accounting;
