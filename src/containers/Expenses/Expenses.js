@@ -62,15 +62,14 @@ class Expenses extends Component {
         openView: false,
       });
       console.log('/income', this.state);
-      
     } else if (this.props.match.path === '/' && this.state.expenses === false) {
       this.setState({
         expenses: true,
         openView: false,
       });
-      console.log('/', this.state)
+      console.log('/', this.state);
     }
-    this.sync()
+    this.sync();
   }
 
   sumInputArr(arr) {
@@ -125,8 +124,7 @@ class Expenses extends Component {
     this.setState({
       input,
     });
-    this.sync()
-
+    this.sync();
   };
 
   refreshView = (inputId) => {
@@ -160,9 +158,9 @@ class Expenses extends Component {
     modal.inputValue = newName;
     console.log(event.target);
 
-      this.setState({
-        modal,
-      });
+    this.setState({
+      modal,
+    });
   };
 
   onSubmitModal = (event) => {
