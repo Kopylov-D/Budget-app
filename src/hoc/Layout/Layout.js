@@ -3,7 +3,6 @@ import classes from './Layout.module.css';
 import { NavLink } from 'react-router-dom';
 
 class Layout extends React.Component {
-
   render() {
     return (
       <div className={classes.Layout}>
@@ -16,33 +15,23 @@ class Layout extends React.Component {
         </nav>
         <header>
           <h2>Финансы</h2>
-          { this.props.isAuthenticated ?
-          <NavLink
-          to="/logout"
-          activeClassName={classes.active}
-          className={classes.auth}
-        >
-          Выход
-        </NavLink> :
-        <NavLink
-        to="/auth"
-        activeClassName={classes.active}
-        className={classes.auth}
-      >
-        Вход
-      </NavLink>
-           }
-          
+          {this.props.isAuthenticated ? (
+            <NavLink
+              to="/logout"
+              activeClassName={classes.active}
+              className={classes.auth}
+            >
+              Выход
+            </NavLink>
+          ) : (
+            <NavLink to="/auth" activeClassName={classes.active} className={classes.auth}>
+              Вход
+            </NavLink>
+          )}
         </header>
         <nav>
           <NavLink to="/" exact activeClassName={classes.active}>
-            Расходы
-          </NavLink>
-          <NavLink to="/income" activeClassName={classes.active}
-            className={classes.income}
-            data-income
-          >
-            Доходы
+            Расход/доход
           </NavLink>
           <NavLink to="/invest" activeClassName={classes.active}>
             Инвестиции

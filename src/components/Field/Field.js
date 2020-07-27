@@ -5,22 +5,27 @@ import FieldItem from './FieldItem/FieldItem';
 const Field = (props) => {
   return (
     <div className={classes.Field}>
-      {props.input.map((input, index) => {
-        if (props.flag === input.expenses) {
+      {props.categories.map((category) => {
+        if (
+          props.isExpenses === category.isExpenses
+        ) {
           return (
             <FieldItem
-              key={index}
-              id={input.id}
-              nameCategory={input.nameCategory}
-              sumCurrent={input.sumCurrent[props.currentMonthId]}
-              currentInput={input.currentInput}
+              key={'key' + category.id}
+              id={category.id}
+              // data={props.data.filter(
+              //   (d) => d.categoryId === category.id && d.monthId === category.monthId
+              // )}
+              nameCategory={category.nameCategory}
+              sumCurrent={category.sumCurrent[props.currentMonthId]}
+              currentInput={category.currentInput}
               onChange={props.onChange}
               onClick={props.onClick}
               onNameCategoryClick={props.onNameCategoryClick}
               onSubmit={props.onSubmit}
             />
           );
-        } else return null
+        } else return null;
       })}
     </div>
   );

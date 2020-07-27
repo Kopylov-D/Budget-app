@@ -13,76 +13,96 @@ import Loader from '../../components/UI/Loader/Loader';
 
 class Accounting extends Component {
   state = {
-    currentMonthId: 0,
-    expenses: true,
-    activeInput: 0,
-    openView: false,
-    loading: true,
+    currentMonthId: 1,
+    isExpenses: true,
+    activeCategory: 0,
+    openView: true,
+    loading: false,
     modal: {
       isOpen: false,
       title: 'Введите имя категории',
-      inputValue: '',
+      nameCategory: '',
       style: 'modal',
       currentCategoryId: null,
     },
     expensesSum: 0,
     sumCash: 0,
-    input: [
+
+    categories: [
       {
         id: 1,
-        monthId: null,
-        expenses: true,
+        monthId: 1,
+        isExpenses: true,
         nameCategory: 'Новая категория расходов',
-        sumCurrent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        data: [],
+        sumCurrent: {},
+      },
+      {
+        id: 3,
+        monthId: 1,
+        isExpenses: true,
+        nameCategory: 'Новая категория расходов',
+        sumCurrent: {},
       },
       {
         id: 2,
-        monthId: null,
-        expenses: false,
+        monthId: 1,
+        isExpenses: false,
         nameCategory: 'Новая категория доходов',
-        sumCurrent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        data: [],
+        sumCurrent: {},
       },
     ],
+    data: [],
   };
 
   async componentDidMount() {
     try {
-      const response = await axios.get('/state.json');
-      const state = response.data;
-      this.setState(state);
-      this.setState({ loading: false });
+      const response = await axios.get('/2020/categories.json');
+      const data = response.data;
+
+      console.log(data)
+
+      const categories = []
+
+      Object.keys(data).forEach(key => {
+        categories.push({
+          id: key,
+          monthId: data[key].monthId,
+          isExpenses: data[key].isExpenses,
+          nameCategory: data[key].nameCategory,
+          sumCurrent: {}
+
+        })
+
+      })
+      console.log(categories)
+
+      this.setState({
+        categories
+      })
+
+
+      // this.setState(state);
+      // this.setState({ loading: false });
     } catch (e) {
       console.log(e);
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.match.path === '/income' && this.state.expenses === true) {
-      this.setState({
-        expenses: false,
-        openView: false,
-      });
-      console.log('/income', this.state);
-    } else if (this.props.match.path === '/' && this.state.expenses === false) {
-      this.setState({
-        expenses: true,
-        openView: false,
-      });
-      console.log('/', this.state);
-    }
-  }
-
-  sumInputArr(arr) {
-    return arr.reduce((sum, current) => {
-      if (current.id === this.state.currentMonthId) {
-        return sum + current.price;
-      } else {
-        return null;
-      }
-    }, 0);
-  }
+  // componentDidUpdate() {
+  //   if (this.props.match.path === '/income' && this.state.expenses === true) {
+  //     this.setState({
+  //       expenses: false,
+  //       openView: false,
+  //     });
+  //     console.log('/income', this.state);
+  //   } else if (this.props.match.path === '/' && this.state.expenses === false) {
+  //     this.setState({
+  //       expenses: true,
+  //       openView: false,
+  //     });
+  //     console.log('/', this.state);
+  //   }
+  // }
 
   sync = () => {
     try {
@@ -95,45 +115,65 @@ class Accounting extends Component {
 
   onChangeHandler = (event, id) => {};
 
-  onSubmitHandler = (event, id, valid, value) => {
+  onSubmitHandler = async (event, id, valid, value) => {
     event.preventDefault();
 
     if (!valid) {
       return;
     }
-    // const number = +event.target.firstChild.lastChild.value;
-    const number = +value;
 
-    const ind = id - 1;
-    const input = [...this.state.input];
-    const elementData = { ...input[ind] };
+    const categories = [...this.state.categories];
+    const data = [...this.state.data];
+
+    const monthId = this.state.currentMonthId;
+    const amount = +value;
+
     const newData = {
+      // id: Math.random(),
       date: new Date().toLocaleDateString(),
-      price: number,
-      // id: new Date().getMonth() + 1,
-      id: this.state.currentMonthId,
+      amount,
+      categoryId: id,
+      monthId,
     };
-    const data = elementData.data;
-    data.push(newData);
 
-    let newSumCurrent = this.sumInputArr(data);
+    try {
+      const response = await axios.post('/2020/data.json', newData);
+      data.push(response.data);
+    } catch (e) {
+      console.log(e);
+    }
 
-    const t = this.state.currentMonthId;
-    elementData.sumCurrent.splice(t, 1, newSumCurrent);
+    // data.push(newData);
 
-    input[ind].sumCurrent = elementData.sumCurrent;
+    try {
+      const response = await axios.get(`/2020/categories/${id}.json`);
+      console.log(response.data)
+    } catch (e) {
+      console.log(e);
+    }
+
+    categories.map((c) => {
+      if (c.id === id) {
+        c.sumCurrent[monthId]
+          ? (c.sumCurrent[monthId] += amount)
+          : (c.sumCurrent[monthId] = amount);
+        return;
+      }
+    });
 
     this.setState({
-      input,
+      categories,
+      data,
     });
-    this.sync();
   };
 
-  refreshView = (inputId) => {
+  refreshView = (categoryId) => {
     this.setState({
-      activeInput: inputId - 1,
+      activeCategory: categoryId,
       openView: true,
     });
+
+    console.log(this.state.categories)
   };
 
   onMonthClickHandler = (monthId) => {
@@ -143,10 +183,10 @@ class Accounting extends Component {
     });
   };
 
-  onNameCategoryClickHandler = (inputId) => {
+  onNameCategoryClickHandler = (categoryId) => {
     const modal = { ...this.state.modal };
     modal.isOpen = true;
-    modal.currentCategoryId = inputId;
+    modal.currentCategoryId = categoryId;
 
     this.setState({
       modal,
@@ -157,8 +197,7 @@ class Accounting extends Component {
     const modal = { ...this.state.modal };
     const newName = event.target.value;
 
-    modal.inputValue = newName;
-    console.log(event.target);
+    modal.nameCategory = newName;
 
     this.setState({
       modal,
@@ -172,97 +211,141 @@ class Accounting extends Component {
 
   onOkModalClick = () => {
     const modal = { ...this.state.modal };
-    const inputId = modal.currentCategoryId;
+    const categories = [...this.state.categories];
 
-    const input = [...this.state.input];
-    const newInputItem = { ...input[inputId - 1] };
+    const categoryId = modal.currentCategoryId;
+    const nameCategory = modal.nameCategory;
 
-    if (modal.inputValue) {
-      newInputItem.nameCategory = modal.inputValue;
-
-      input[inputId - 1] = newInputItem;
+    if (modal.nameCategory) {
+      categories.map((c) => {
+        if (c.id === categoryId) {
+          c.nameCategory = nameCategory;
+        }
+      });
     }
 
     modal.isOpen = false;
-    modal.inputValue = '';
+    modal.nameCategory = '';
 
     this.setState({
-      input,
+      categories,
       modal,
     });
   };
 
   onCancelModalClick = () => {
-    console.log('Modal cancel');
-    const modal = { ...this.state.modal };
-    modal.isOpen = false;
-
-    this.setState({
-      modal,
-    });
+    this.setState((state) => (state.modal.isOpen = false));
   };
 
   onDeleteModalClickHandler = () => {
     const modal = { ...this.state.modal };
-    const input = [...this.state.input];
+    let categories = [...this.state.categories];
+    let data = [...this.state.data];
 
-    const inputId = modal.currentCategoryId;
+    const categoryId = modal.currentCategoryId;
 
-    const delCategory = input.findIndex((item) => item.id === inputId);
-    input.splice(delCategory, 1);
+    const delData = []
+
+    data.forEach(d => {
+      if (d.categoryId === categoryId) {
+        delData.push(d)
+      }
+    })
+
+    console.log(delData)
+
+    categories = categories.filter((c) => c.id === categoryId);
+    data = data.filter((d) => d.categoryId === categoryId);
 
     this.setState({
-      input,
+      categories,
+      data,
     });
 
     this.onCancelModalClick();
   };
 
-  onDeleteButtonClickHandler = (id, inputId) => {
-    const input = [...this.state.input];
-    const elementData = { ...input[inputId] };
-    const data = elementData.data;
+  onDeleteButtonClickHandler = (id, categoryId) => {
+    const categories = [...this.state.categories];
+    let data = [...this.state.data];
 
-    data.splice(id, 1);
+    const current = data.find((d) => d.id === id);
+    const removeSum = current.amount;
+    const monthId = current.monthId;
+    categories.map((c) => {
+      if (c.id === categoryId) {
+        c.sumCurrent[monthId] -= removeSum;
+      }
+    });
 
-    const newSumCurrent = this.sumInputArr(data);
-
-    const t = this.state.currentMonthId;
-    elementData.sumCurrent.splice(t, 1, newSumCurrent);
-    input[inputId].sumCurrent = elementData.sumCurrent;
+    data = data.filter((d) => d.id !== id);
 
     this.setState({
-      input,
+      categories,
+      data,
     });
   };
 
-  onTestButtonClickHandler = () => {
-    this.sync();
+  onTestButtonClickHandler = async () => {
+    try {
+      const response = await axios.get('/2020/data.json?orderBy="$key"&equalTo="-MDFvqywIGLkRlwZ-nx3"');
+
+      console.log(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+    // try {
+    //   const response = await axios.put('/2020.json', this.state);
+
+    //   console.log(response);
+    // } catch (e) {
+    //   console.error(e);
+    // }
+
+    // this.sync();
     // console.log(this.props.match.path);
   };
 
-  renderInput() {
-    const input = [...this.state.input];
-    const newInputItem = { ...input[0] };
-    const monthId = this.state.currentMonthId;
-    const id = input.length + 1;
-    newInputItem.id = id;
-    newInputItem.monthId = monthId;
-    newInputItem.expenses = this.state.expenses;
+  async renderInput() {
+    const categories = [...this.state.categories];
+    const newCategory = {
+      // id: Math.random(),
+      monthId: this.state.currentMonthId,
+      isExpenses: this.state.isExpenses,
+      nameCategory: 'Новая категория',
+      sumCurrent: {},
+    };
 
-    newInputItem.nameCategory = 'Новая категория';
-    newInputItem.sumCurrent = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    newInputItem.data = [];
-    input.push(newInputItem);
-
-    this.setState({
-      input: input,
-    });
+    try {
+      const response = await axios.post('/2020/categories.json', newCategory);
+      categories.push(response.data);
+      console.log(response.data)
+      this.setState({
+        categories,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {
     return (
-      <div className={classes.Expenses}>
+      <div className={classes.accounting}>
+        <nav className={classes.toggle}>
+          <div
+            style={this.state.isExpenses ? { background: 'red' } : null}
+            onClick={() => this.setState({ isExpenses: true, openView: false })}
+          >
+            Расходы
+          </div>
+          <div
+            style={this.state.isExpenses ? null : { background: 'red' }}
+            onClick={() => this.setState({ isExpenses: false, openView: false })}
+          >
+            Доходы
+          </div>
+        </nav>
+
         <Month
           onClick={this.onMonthClickHandler}
           currentMonthId={this.state.currentMonthId}
@@ -273,9 +356,9 @@ class Accounting extends Component {
           <React.Fragment>
             <div className={classes.workArea}>
               <Field
-                flag={this.state.expenses}
-                input={this.state.input}
-                activeInput={this.state.activeInput}
+                isExpenses={this.state.isExpenses}
+                categories={this.state.categories}
+                data={this.state.data}
                 currentMonthId={this.state.currentMonthId}
                 onChange={this.onChangeHandler}
                 onSubmit={this.onSubmitHandler}
@@ -283,12 +366,11 @@ class Accounting extends Component {
                 onNameCategoryClick={this.onNameCategoryClickHandler}
               />
               <View
-                flag={this.state.expenses}
-                input={this.state.input[this.state.activeInput]}
-                inputId={this.state.activeInput}
+                isExpenses={this.state.isExpenses}
+                activeCategory={this.state.activeCategory}
                 currentMonthId={this.state.currentMonthId}
                 openView={this.state.openView}
-                data={this.state.input[this.state.activeInput].data}
+                data={this.state.data}
                 onNameCategoryClick={this.onNameCategoryClickHandler}
                 onDeleteButtonClick={this.onDeleteButtonClickHandler}
               />

@@ -1,21 +1,39 @@
-.Expenses {
-    height: max-content;
-    /* min-height: 250px; */
-    max-width: 100%;
-    background: #ffffff;
-    color: black;
+.accounting {
+  height: max-content;
+  /* min-height: 250px; */
+  max-width: 100%;
+  background: #ffffff;
+  color: black;
+}
+
+.toggle {
+  display: flex;
+  /* justify-content: space-around; */
+  font-size: 1.2rem;
+  flex: 1;
+  text-align: center;
+
+
+  /* background: #eeeeee; */
+}
+
+.toggle div {
+    padding: 5px;
+    cursor: pointer;
+    flex: 1;
+
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .workArea {
-    display: flex;
-    align-items: flex-start;
-    margin: 10px auto;
-    padding: 5px;
-    min-height: 150px;
-    /* border: 2px solid #cccccc; */
+  display: flex;
+  align-items: flex-start;
+  margin: 10px auto;
+  padding: 5px;
+  min-height: 150px;
+  /* border: 2px solid #cccccc; */
 }

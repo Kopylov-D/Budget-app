@@ -18,13 +18,13 @@ const months = [
 ];
 
 const Month = (props) => {
-  const renderMonth = () => {
+  const renderMonths = () => {
     return months.map((month, index) => {
       return (
-        <div key={index}>
+        <div key={'m' + index}>
           <MonthItem
             onClick={props.onClick}
-            id={index}
+            id={index + 1}
             month={month}
             currentMonthId={props.currentMonthId}
           />
@@ -33,7 +33,7 @@ const Month = (props) => {
     });
   };
 
-  return <div className={classes.Month}>{renderMonth()}</div>;
+  return <div className={classes.Month}>{renderMonths()}</div>;
 };
 
 export default Month;

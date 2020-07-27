@@ -20,7 +20,7 @@ class App extends Component {
       <Switch>
         <Route path="/auth" component={Auth} />
         
-        <Redirect to="/invest" />
+        <Redirect to="/" />
       </Switch>
     );
 
@@ -28,7 +28,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/" exact component={Accounting} />
-          <Route path="/income" component={Accounting} />
+          {/* <Route path="/income" component={Accounting} /> */}
           <Route path="/invest" component={Invest} />
           <Route path="/yearstat" component={YearStat} />
           <Route path="/logout" component={Logout} />

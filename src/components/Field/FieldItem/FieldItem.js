@@ -25,6 +25,20 @@ const FieldItem = (props) => {
     }
   };
 
+  // sumInputArr(arr) {
+  //   return arr.reduce((sum, current) => {
+  //     if (current.id === this.state.currentMonthId) {
+  //       return sum + current.price;
+  //     } else {
+  //       return null;
+  //     }
+  //   }, 0);
+  // }
+
+  // let sum = props.data.reduce((sum, cur) => {
+  //   return sum + cur.amount;
+  // }, 0);
+
   return (
     <div className={classes.FieldItem}>
       <div
