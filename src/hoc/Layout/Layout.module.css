@@ -1,5 +1,5 @@
 .Layout {
-    width: 100%;
+    /* width: 100%; */
     max-width: 750px;
     margin: 0 auto;
     padding: 0;
@@ -52,12 +52,9 @@ a.active {
     color: red;
 }
 
-/* .active{
-    color: brown;
-} */
 
 .auth {
-    /* background: grey; */
+
     border-radius: 2px;
     height: 18px;
 }

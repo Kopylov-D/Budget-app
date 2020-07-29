@@ -16,8 +16,8 @@ class Accounting extends Component {
     currentMonthId: 1,
     isExpenses: true,
     activeCategory: 0,
-    openView: true,
-    loading: false,
+    openView: false,
+    loading: true,
     modal: {
       isOpen: false,
       title: 'Введите имя категории',
@@ -28,90 +28,55 @@ class Accounting extends Component {
     expensesSum: 0,
     sumCash: 0,
 
-    categories: [
-      {
-        id: 1,
-        monthId: 1,
-        isExpenses: true,
-        nameCategory: 'Новая категория расходов',
-        sumCurrent: {},
-      },
-      {
-        id: 3,
-        monthId: 1,
-        isExpenses: true,
-        nameCategory: 'Новая категория расходов',
-        sumCurrent: {},
-      },
-      {
-        id: 2,
-        monthId: 1,
-        isExpenses: false,
-        nameCategory: 'Новая категория доходов',
-        sumCurrent: {},
-      },
-    ],
+    categories: [],
     data: [],
   };
 
   async componentDidMount() {
     try {
-      const response = await axios.get('/2020/categories.json');
-      const data = response.data;
+      const response = await axios.get('/2020.json');
+      const resData = response.data;
 
-      console.log(data)
+      const categories = [];
+      const data = [];
 
-      const categories = []
+      if (resData.categories) {
+        Object.keys(resData.categories).forEach((key) => {
+          categories.push({
+            id: key,
+            monthId: resData.categories[key].monthId,
+            isExpenses: resData.categories[key].isExpenses,
+            nameCategory: resData.categories[key].nameCategory,
+            sumCurrent: resData.categories[key].sumCurrent
+              ? resData.categories[key].sumCurrent
+              : {},
+          });
+        });
+      }
 
-      Object.keys(data).forEach(key => {
-        categories.push({
-          id: key,
-          monthId: data[key].monthId,
-          isExpenses: data[key].isExpenses,
-          nameCategory: data[key].nameCategory,
-          sumCurrent: {}
-
-        })
-
-      })
-      console.log(categories)
+      if (resData.data) {
+        Object.keys(resData.data).forEach((key) => {
+          data.push({
+            id: key,
+            amount: resData.data[key].amount,
+            categoryId: resData.data[key].categoryId,
+            date: resData.data[key].date,
+            monthId: resData.data[key].monthId,
+          });
+        });
+      }
 
       this.setState({
-        categories
-      })
-
-
-      // this.setState(state);
-      // this.setState({ loading: false });
+        categories,
+        data,
+        currentMonthId: resData.currentMonthId,
+        isExpenses: resData.isExpenses,
+        loading: false,
+      });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
-
-  // componentDidUpdate() {
-  //   if (this.props.match.path === '/income' && this.state.expenses === true) {
-  //     this.setState({
-  //       expenses: false,
-  //       openView: false,
-  //     });
-  //     console.log('/income', this.state);
-  //   } else if (this.props.match.path === '/' && this.state.expenses === false) {
-  //     this.setState({
-  //       expenses: true,
-  //       openView: false,
-  //     });
-  //     console.log('/', this.state);
-  //   }
-  // }
-
-  sync = () => {
-    try {
-      axios.patch('/state.json', this.state);
-      console.log('sync');
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   onChangeHandler = (event, id) => {};
 
@@ -129,7 +94,6 @@ class Accounting extends Component {
     const amount = +value;
 
     const newData = {
-      // id: Math.random(),
       date: new Date().toLocaleDateString(),
       amount,
       categoryId: id,
@@ -138,18 +102,13 @@ class Accounting extends Component {
 
     try {
       const response = await axios.post('/2020/data.json', newData);
-      data.push(response.data);
+      newData.id = response.data.name;
+      data.push(newData);
+      this.setState({
+        data,
+      });
     } catch (e) {
-      console.log(e);
-    }
-
-    // data.push(newData);
-
-    try {
-      const response = await axios.get(`/2020/categories/${id}.json`);
-      console.log(response.data)
-    } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     categories.map((c) => {
@@ -157,14 +116,20 @@ class Accounting extends Component {
         c.sumCurrent[monthId]
           ? (c.sumCurrent[monthId] += amount)
           : (c.sumCurrent[monthId] = amount);
-        return;
       }
     });
 
-    this.setState({
-      categories,
-      data,
-    });
+    const cat = categories.find((c) => c.id === id);
+
+    try {
+      await axios.patch(`/2020/categories/${id}.json`, cat);
+      this.setState({
+        categories,
+      });
+      return;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   refreshView = (categoryId) => {
@@ -172,11 +137,10 @@ class Accounting extends Component {
       activeCategory: categoryId,
       openView: true,
     });
-
-    console.log(this.state.categories)
   };
 
   onMonthClickHandler = (monthId) => {
+    axios.patch('/2020.json', { currentMonthId: monthId });
     this.setState({
       currentMonthId: monthId,
       openView: false,
@@ -209,7 +173,7 @@ class Accounting extends Component {
     event.preventDefault();
   };
 
-  onOkModalClick = () => {
+  onOkModalClick = async () => {
     const modal = { ...this.state.modal };
     const categories = [...this.state.categories];
 
@@ -220,6 +184,17 @@ class Accounting extends Component {
       categories.map((c) => {
         if (c.id === categoryId) {
           c.nameCategory = nameCategory;
+          try {
+            axios.patch(`/2020/categories/${categoryId}.json`, c).then((response) => {
+              console.log(response.data);
+              this.setState({
+                categories,
+              });
+              return;
+            });
+          } catch (e) {
+            console.error(e);
+          }
         }
       });
     }
@@ -228,7 +203,6 @@ class Accounting extends Component {
     modal.nameCategory = '';
 
     this.setState({
-      categories,
       modal,
     });
   };
@@ -237,35 +211,38 @@ class Accounting extends Component {
     this.setState((state) => (state.modal.isOpen = false));
   };
 
-  onDeleteModalClickHandler = () => {
+  onDeleteModalClickHandler = async () => {
     const modal = { ...this.state.modal };
     let categories = [...this.state.categories];
     let data = [...this.state.data];
 
     const categoryId = modal.currentCategoryId;
 
-    const delData = []
+    categories = categories.filter((c) => c.id !== categoryId);
+    try {
+      await axios.delete(`/2020/categories/${categoryId}.json`);
+      this.setState({ categories });
+    } catch (e) {
+      console.error(e);
+    }
 
-    data.forEach(d => {
-      if (d.categoryId === categoryId) {
-        delData.push(d)
-      }
-    })
-
-    console.log(delData)
-
-    categories = categories.filter((c) => c.id === categoryId);
-    data = data.filter((d) => d.categoryId === categoryId);
-
-    this.setState({
-      categories,
-      data,
-    });
+    try {
+      data.forEach((d) => {
+        if (d.categoryId === categoryId) {
+          axios.delete(`/2020/data/${d.id}.json`).then(() => {
+            data = data.filter((d) => d.categoryId !== categoryId);
+            this.setState({ data });
+          });
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
     this.onCancelModalClick();
   };
 
-  onDeleteButtonClickHandler = (id, categoryId) => {
+  onDeleteButtonClickHandler = async (id, categoryId) => {
     const categories = [...this.state.categories];
     let data = [...this.state.data];
 
@@ -275,20 +252,34 @@ class Accounting extends Component {
     categories.map((c) => {
       if (c.id === categoryId) {
         c.sumCurrent[monthId] -= removeSum;
+        try {
+          axios.patch(`/2020/categories/${categoryId}.json`, c).then(() => {
+            this.setState({
+              categories,
+            });
+            return;
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
     });
 
     data = data.filter((d) => d.id !== id);
 
-    this.setState({
-      categories,
-      data,
-    });
+    try {
+      await axios.delete(`/2020/data/${id}.json`);
+      this.setState({ data });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   onTestButtonClickHandler = async () => {
     try {
-      const response = await axios.get('/2020/data.json?orderBy="$key"&equalTo="-MDFvqywIGLkRlwZ-nx3"');
+      const response = await axios.get(
+        '/2020/data.json?orderBy="$key"&equalTo="-MDFvqywIGLkRlwZ-nx3"'
+      );
 
       console.log(response.data);
     } catch (e) {
@@ -309,7 +300,6 @@ class Accounting extends Component {
   async renderInput() {
     const categories = [...this.state.categories];
     const newCategory = {
-      // id: Math.random(),
       monthId: this.state.currentMonthId,
       isExpenses: this.state.isExpenses,
       nameCategory: 'Новая категория',
@@ -318,13 +308,13 @@ class Accounting extends Component {
 
     try {
       const response = await axios.post('/2020/categories.json', newCategory);
-      categories.push(response.data);
-      console.log(response.data)
+      newCategory.id = response.data.name;
+      categories.push(newCategory);
       this.setState({
         categories,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -374,12 +364,12 @@ class Accounting extends Component {
                 onNameCategoryClick={this.onNameCategoryClickHandler}
                 onDeleteButtonClick={this.onDeleteButtonClickHandler}
               />
-              <Button type="success" onClick={this.onTestButtonClickHandler}>
-                Синхронизация
-              </Button>
             </div>
             <Button type="primary" onClick={() => this.renderInput()}>
               Добавить
+            </Button>
+            <Button type="success" onClick={this.onTestButtonClickHandler}>
+              Синхронизация
             </Button>
           </React.Fragment>
         )}
