@@ -1,4 +1,9 @@
 .Month {
     display: flex;
     cursor: pointer;
+    /* max-width: 300px; */
 }
+
+/* .Month div {
+    padding: 5px;
+} */
