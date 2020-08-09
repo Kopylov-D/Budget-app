@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const YearStat = () => {
-  const [state, setstate] = useState({});
-
   return (
     <div className="stat">
       <div>Статистика за год</div>{' '}

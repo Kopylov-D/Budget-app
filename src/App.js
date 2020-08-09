@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+
 import Layout from './hoc/Layout/Layout';
 import Accounting from './containers/Accounting/Accounting';
 import YearStat from './containers/YearStat/YearStat';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-// import Income from './containers/Income/Income';
-import Invest from './containers/Invest/Invest';
 import Auth from './containers/Auth/Auth';
-import { connect } from 'react-redux';
 import Logout from './components/Logout/Logout';
+
 import { autoLogin } from './store/actions/auth';
 
 class App extends Component {
@@ -28,13 +28,10 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/" exact component={Accounting} />
-          {/* <Route path="/income" component={Accounting} /> */}
-          <Route path="/invest" component={Invest} />
           <Route path="/yearstat" component={YearStat} />
           <Route path="/logout" component={Logout} />
-          
-          <Redirect to="/" />
 
+          <Redirect to="/" />
         </Switch>
       );
     }

@@ -4,5 +4,5 @@ import accountingReducer from './accounting'
 
 export default combineReducers({
   auth: authReducer,
-  // accounting: accountingReducer
+  accounting: accountingReducer,
 });
