@@ -1,4 +1,7 @@
 import axios from '../../axios/axios-expenses';
+
+import { validate } from '../../form/formUtils';
+
 import {
   FETCH_DATA_START,
   FETCH_DATA_SUCCESS,
@@ -9,7 +12,8 @@ import {
   ON_MODAL_INPUT,
   SET_DATA,
   SET_CATEGORIES,
-  SUBMIT_INPUT_SET_DATA
+  SUBMIT_INPUT_SET_DATA,
+  SET_SECTION,
 } from './actionTypes';
 
 export function fetchData() {
@@ -83,9 +87,9 @@ export function fetchError(error) {
 
 export function submitInput(id, value) {
   return async (dispatch, setState) => {
-    const state = setState()
+    const state = setState();
 
-    const categories = state.accounting.categories
+    let categories = state.accounting.categories;
     const monthId = state.accounting.currentMonthId;
     const amount = +value;
 
@@ -99,36 +103,36 @@ export function submitInput(id, value) {
     try {
       const response = await axios.post('/2020/data.json', newData);
       newData.id = response.data.name;
-      dispatch(submitInputSetData(newData))
+      dispatch(submitInputSetData(newData));
     } catch (e) {
-      dispatch(fetchError(e))
+      dispatch(fetchError(e));
     }
 
-    categories.map((c) => {
+    categories = categories.map((c) => {
       if (c.id === id) {
         c.sumCurrent[monthId]
           ? (c.sumCurrent[monthId] += amount)
           : (c.sumCurrent[monthId] = amount);
       }
+      return c;
     });
 
     const cat = categories.find((c) => c.id === id);
 
     try {
       await axios.patch(`/2020/categories/${id}.json`, cat);
-      dispatch(setCategories(categories))
-      return;
+      dispatch(setCategories(categories));
     } catch (e) {
-      dispatch(fetchError(e))
+      dispatch(fetchError(e));
     }
-  }
+  };
 }
 
 export function submitInputSetData(newData) {
   return {
     type: SUBMIT_INPUT_SET_DATA,
-    newData
-  }
+    newData,
+  };
 }
 
 export function addInput() {
@@ -136,7 +140,6 @@ export function addInput() {
     const state = getState();
 
     const newCategory = {
-      monthId: state.accounting.currentMonthId,
       isExpenses: state.accounting.isExpenses,
       nameCategory: 'Новая категория',
       sumCurrent: {},
@@ -259,13 +262,21 @@ export function setNewName(categoryId) {
     const state = setState();
     const nameCategory = state.accounting.newNameCategory;
     const categories = state.accounting.categories;
-    if (nameCategory) {
+
+    const validation = {
+      required: true,
+      maxLength: 30,
+    };
+
+    const valid = validate(nameCategory, validation);
+
+    if (valid) {
       categories.map((c) => {
         if (c.id === categoryId) {
           c.nameCategory = nameCategory;
           try {
             axios.patch(`/2020/categories/${categoryId}.json`, c).then(() => {
-              dispatch(setCategories(categories))
+              dispatch(setCategories(categories));
               return;
             });
           } catch (e) {
@@ -273,6 +284,8 @@ export function setNewName(categoryId) {
           }
         }
       });
+    } else {
+      alert('Слишком большая длина ввода!');
     }
   };
 }
@@ -281,5 +294,11 @@ export function onModalInput(newName) {
   return {
     type: ON_MODAL_INPUT,
     newName,
+  };
+}
+
+export function setSection() {
+  return {
+    type: SET_SECTION,
   };
 }

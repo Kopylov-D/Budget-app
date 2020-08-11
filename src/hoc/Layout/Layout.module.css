@@ -1,60 +1,43 @@
 .Layout {
-    /* width: 100%; */
-    max-width: 750px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.header h1 {
-    margin: 0;
-    padding-right: 10px;
-    cursor: pointer;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 5px;
 }
 
 .header {
-    height: 30px;
-    background: none;
-    display: flex;
-    align-items: baseline;
-    font-size: 1.2rem;
-    padding: 15px;
-    border-bottom: 1px solid #bebebe;
-    transition: all 300ms ease-in-out;
+  background: none;
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid #bebebe;
 }
 
-.header > div {
-    padding-right: 10px;
-    text-transform: uppercase;
+.header h1 {
+  margin: 1rem;
 }
 
-.header > div:hover {
-    cursor: pointer;
-    color: rgb(255, 0, 0);
+.header nav {
+  display: flex;
+  align-items: baseline;
 }
 
-main {
-    /* margin-top: 30px; */
+.header :only-child:hover {
+  cursor: pointer;
+  color: rgba(240, 87, 108, 1);
 }
 
 a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-}
-
-.income {
-    cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
 }
 
 a.active {
-    color: red;
+  color: rgba(240, 87, 108, 1);
 }
 
-
 .auth {
-
-    border-radius: 2px;
-    height: 18px;
+  border-radius: 2px;
+  height: 18px;
 }

@@ -1,20 +1,22 @@
 import React from 'react';
-import classes from './navMonth.module.css';
+
 import MonthItem from './MonthItem/MonthItem';
 
+import classes from './navMonth.module.css';
+
 const months = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
+  'ЯНВ',
+  'ФЕВ',
+  'МАРТ',
+  'АПР',
+  'МАЙ',
+  'ИЮНЬ',
+  'ИЮЛЬ',
+  'АВГ',
+  'СЕН',
+  'ОКТ',
+  'НБР',
+  'ДЕК',
 ];
 
 const Month = (props) => {

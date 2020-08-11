@@ -1,60 +1,47 @@
 import React from 'react';
-import classes from './Modal.module.css';
+import { CSSTransition } from 'react-transition-group';
+
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import Backdrop from '../BackDrop/BackDrop';
-import { CSSTransition } from 'react-transition-group';
 
-const Modal = (props) => {
-  const cls = [classes.Modal];
+import classes from './Modal.module.css';
 
-  // if (!props.modal.isOpen) {
-  //   cls.push(classes.close);
-  // }
-
+const Modal = ({
+  modal,
+  onSubmitModal,
+  onChangeModal,
+  onOkModalClick,
+  onCancelModalClick,
+  onDeleteModalClick,
+  onKeyPress,
+}) => {
   return (
-    <CSSTransition
-      in={props.modal.isOpen}
-      timeout={{
-        enter: 200,
-        exit: 200,
-      }}
-      classNames="m"
-      mountOnEnter
-      unmountOnExit
-    >
-      <React.Fragment>
-        <div className={cls.join(' ')}>
-          <label>{props.modal.title}</label>
+    <CSSTransition in={modal.isOpen} timeout={0} classNames={classes.m} unmountOnExit>
+      <div>
+        <div className={classes.Modal}>
+          <label>{modal.title}</label>
           <form
             onSubmit={(event) => {
-              props.onSubmitModal(event);
+              onSubmitModal(event);
             }}
           >
-            <Input
-              type={props.modal.inputType}
-              style={props.modal.style}
-              onChange={props.onChangeModal}
-              // value={props.modal.inputValue}
-            />
+            <Input type={modal.inputType} style={modal.style} onChange={onChangeModal} />
           </form>
           <div className={classes.buttons}>
-            <Button type="success" onClick={props.onOkModalClick}>
+            <Button type="success" onClick={onOkModalClick}>
               Ок
             </Button>
-            <Button type="primary" onClick={props.onCancelModalClick}>
+            <Button type="primary" onClick={onCancelModalClick}>
               Отмена
             </Button>
-            <Button type="primary" onClick={props.onDeleteModalClick}>
+            <Button type="error" onClick={onDeleteModalClick}>
               Удалить категорию
             </Button>
           </div>
         </div>
-        <Backdrop
-          onClick={props.onCancelModalClick}
-          onKeyPress={props.onKeyPress}
-        />
-      </React.Fragment>
+        <Backdrop onClick={onCancelModalClick} onKeyPress={onKeyPress} />
+      </div>
     </CSSTransition>
   );
 };

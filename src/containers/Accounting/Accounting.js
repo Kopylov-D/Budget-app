@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import classes from './Accounting.module.css';
-
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
 import Month from '../../components/Navigation/Month/navMonth';
@@ -18,7 +16,10 @@ import {
   setMonthId,
   onModalInput,
   setNewName,
+  setSection,
 } from '../../store/actions/accounting';
+
+import classes from './Accounting.module.css';
 
 class Accounting extends Component {
   state = {
@@ -42,7 +43,7 @@ class Accounting extends Component {
       return;
     }
 
-    this.props.submitInput(id, value)
+    this.props.submitInput(id, value);
   };
 
   refreshView = (categoryId) => {
@@ -73,8 +74,8 @@ class Accounting extends Component {
   };
 
   onSubmitModal = (event) => {
-    this.onOkModalClickHandler();
     event.preventDefault();
+    this.onOkModalClickHandler();
   };
 
   onOkModalClickHandler = () => {
@@ -84,19 +85,24 @@ class Accounting extends Component {
     this.setState((state) => (state.modal.isOpen = false));
   };
 
-  onCancelModalClick = () => {
+  onCancelModalClickHandler = () => {
     this.setState((state) => (state.modal.isOpen = false));
   };
 
   onDeleteModalClickHandler = () => {
     const categoryId = this.state.activeCategory;
-    this.props.deleteCategory(categoryId)
+    this.props.deleteCategory(categoryId);
 
-    this.onCancelModalClick();
+    this.onCancelModalClickHandler();
   };
 
   onDeleteButtonClickHandler = (id, categoryId) => {
     this.props.deleteItem(id, categoryId);
+  };
+
+  toggleSection = () => {
+    this.props.setSection();
+    this.setState({ openView: false });
   };
 
   render() {
@@ -104,14 +110,14 @@ class Accounting extends Component {
       <div className={classes.accounting}>
         <nav className={classes.toggle}>
           <div
-            style={this.props.isExpenses ? { background: 'red' } : null}
-            onClick={() => this.setState({ isExpenses: true, openView: false })}
+            style={this.props.isExpenses ? { background: 'rgba(240, 87, 108, 1)' } : null}
+            onClick={this.toggleSection}
           >
             Расходы
           </div>
           <div
-            style={this.props.isExpenses ? null : { background: 'red' }}
-            onClick={() => this.setState({ isExpenses: false, openView: false })}
+            style={this.props.isExpenses ? null : { background: 'rgba(240, 87, 108, 1)' }}
+            onClick={this.toggleSection}
           >
             Доходы
           </div>
@@ -131,7 +137,6 @@ class Accounting extends Component {
                 categories={this.props.categories}
                 data={this.props.data}
                 currentMonthId={this.props.currentMonthId}
-                onChange={this.onChangeHandler}
                 onSubmit={this.onSubmitHandler}
                 onClick={this.refreshView}
                 onNameCategoryClick={this.onNameCategoryClickHandler}
@@ -151,6 +156,7 @@ class Accounting extends Component {
             </Button>
           </React.Fragment>
         )}
+
         <Modal
           modal={this.state.modal}
           onOkModalClick={this.onOkModalClickHandler}
@@ -184,7 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
   onModalInput: (newName) => dispatch(onModalInput(newName)),
   setNewName: (categoryId) => dispatch(setNewName(categoryId)),
   submitInput: (id, value) => dispatch(submitInput(id, value)),
-  
+  setSection: () => dispatch(setSection()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Accounting);

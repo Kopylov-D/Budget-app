@@ -13,4 +13,5 @@ export const SET_MONTH_ID = 'SET_MONTH_ID';
 export const ON_MODAL_INPUT = 'ON_MODAL_INPUT';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_DATA = 'SET_DATA';
+export const SET_SECTION = 'SET_SECTION';
 

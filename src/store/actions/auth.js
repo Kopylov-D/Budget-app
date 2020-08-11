@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { AUTH_SUCCESS, AUTH_LOGOUT } from './actionTypes';
 
 export function auth(email, password, isLogin) {
@@ -19,9 +20,9 @@ export function auth(email, password, isLogin) {
     const response = await axios.post(url, authData);
     const data = response.data;
 
-    const expirationDate = new Date(
-      new Date().getTime() + data.expiresIn * 1000
-    );
+    console.log(data);
+
+    const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000);
 
     localStorage.setItem('token', data.idToken);
     localStorage.setItem('userId', data.localId);
@@ -60,9 +61,7 @@ export function autoLogin() {
         dispatch(logout());
       } else {
         dispatch(authSuccess(token));
-        dispatch(
-          autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000)
-        );
+        dispatch(autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000));
       }
     }
   };
@@ -74,4 +73,3 @@ export function authSuccess(token) {
     token,
   };
 }
-

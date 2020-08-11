@@ -7,21 +7,19 @@ import {
   ON_MODAL_INPUT,
   SET_CATEGORIES,
   SET_DATA,
-  SUBMIT_INPUT_SET_DATA
+  SUBMIT_INPUT_SET_DATA,
+  SET_SECTION,
 } from '../actions/actionTypes';
 
 const initialState = {
   currentMonthId: 1,
   isExpenses: true,
   newNameCategory: '',
-  // expensesSum: 0,
-  // sumCash: 0,
   categories: [],
   data: [],
 };
 
 export default (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     case FETCH_DATA_START:
       return {
@@ -72,6 +70,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         newNameCategory: action.newName,
+      };
+    case SET_SECTION:
+      return {
+        ...state,
+        isExpenses: !state.isExpenses,
       };
     default:
       return state;

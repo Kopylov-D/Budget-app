@@ -4,9 +4,9 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import Accounting from './containers/Accounting/Accounting';
-import YearStat from './containers/YearStat/YearStat';
 import Auth from './containers/Auth/Auth';
 import Logout from './components/Logout/Logout';
+import Info from './containers/Info/Info';
 
 import { autoLogin } from './store/actions/auth';
 
@@ -19,8 +19,9 @@ class App extends Component {
     let routes = (
       <Switch>
         <Route path="/auth" component={Auth} />
-        
-        <Redirect to="/" />
+        <Route path="/info" component={Info} />
+
+        <Redirect to="/info" />
       </Switch>
     );
 
@@ -28,7 +29,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/" exact component={Accounting} />
-          <Route path="/yearstat" component={YearStat} />
+          <Route path="/info" component={Info} />
           <Route path="/logout" component={Logout} />
 
           <Redirect to="/" />

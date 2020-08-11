@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import classes from './FieldItem.module.css';
+
 import Input from '../../UI/Input/Input';
-import { createControl, validate } from '../../../form/formFramework';
+import { createControl, validate } from '../../../form/formUtils';
+
+import classes from './FieldItem.module.css';
 
 const FieldItem = (props) => {
   const [control, setControl] = useState(
@@ -25,20 +27,6 @@ const FieldItem = (props) => {
     }
   };
 
-  // sumInputArr(arr) {
-  //   return arr.reduce((sum, current) => {
-  //     if (current.id === this.state.currentMonthId) {
-  //       return sum + current.price;
-  //     } else {
-  //       return null;
-  //     }
-  //   }, 0);
-  // }
-
-  // let sum = props.data.reduce((sum, cur) => {
-  //   return sum + cur.amount;
-  // }, 0);
-
   return (
     <div className={classes.FieldItem}>
       <div
@@ -54,18 +42,16 @@ const FieldItem = (props) => {
       >
         <Input
           id={props.id}
-          label={control.label}
           valid={control.valid}
           touched={control.touched}
           shouldValidate={!!control.validation}
-          errorMessage={control.errorMessage}
           noErrorMessage={control.noErrorMessage}
           onKeyPress={onKeyEnter}
           onClick={() => props.onClick(props.id)}
         />
       </form>
       <div>{props.currentInput}</div>
-      <div className={classes.sum}>Сумма</div>&nbsp;
+      <div className={classes.sum}>cумма</div>&nbsp;
       <div>{props.sumCurrent}</div>
     </div>
   );

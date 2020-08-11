@@ -1,17 +1,18 @@
 import React from 'react';
 
-const MonthItem = (props) => {
+const MonthItem = ({ id, currentMonthId, onClick, month }) => {
   const styles = {
-    padding: '5px',
+    padding: '3px',
+    borderRadius: '1px',
   };
 
-  if (props.id === props.currentMonthId) {
-    styles.background = 'red';
+  if (id === currentMonthId) {
+    styles.background = 'rgba(240, 87, 108, 1)';
   }
 
   return (
-    <div style={styles} onClick={() => props.onClick(props.id)}>
-      {props.month}
+    <div style={styles} onClick={() => onClick(id)}>
+      {month}
     </div>
   );
 };
