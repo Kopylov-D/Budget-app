@@ -21,4 +21,4 @@
 * Управление состоянием с помощью redux
 
 ## Демонстрация: 
-[![Демонстрация](https://s7.gifyu.com/images/budget-app.gif)](https://gifyu.com/image/cNZo)
+[![Демонстрация](https://s7.gifyu.com/images/budget-app-2.gif)](https://gifyu.com/image/cNBU)
