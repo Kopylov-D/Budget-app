@@ -1,9 +1,12 @@
 # Budget App
+
+Приложение для учета расходов и доходов в различных категориях.   
 Демонстрационная версия - [Budget App](https://budget-app-k.web.app/)
 
 ## Используется:
 
 * ReactJS
+* React hooks
 * Redux
 * Redux-thunk
 * React-router
@@ -12,16 +15,10 @@
 ## Реализовано:
 
 * Регистрация и авторизация
-* Хранение записей в базе данных на сервере
+* Работа с базой данных firebase
 * Валидация ввода email и пароля
-* Маршрутизация
+* Роутинг
+* Управление состоянием с помощью redux
 
 ## Демонстрация: 
-[![Демонстрация](https://s7.gifyu.com/images/BudgetApp.gif)](https://gifyu.com/image/cNb0)
-<<<<<<< HEAD
-
-=======
-![Демонстрация](https://drive.google.com/file/d/1f1mtmU4cbLyKcjztH-jyVXxnUfoOghHj/view?usp=sharing)
-
-#### LICENSE
->>>>>>> a0797cb858e69d25ee50853bb004db7ac65aa2b9
+[![Демонстрация](https://s7.gifyu.com/images/budget-app.md.gif)](https://gifyu.com/image/cNZo)
