@@ -285,7 +285,7 @@ export function setNewName(categoryId) {
         }
       });
     } else {
-      alert('Слишком большая длина ввода!');
+      alert('Неверный ввод!');
     }
   };
 }
