@@ -16,18 +16,7 @@
 * 
 
 ## Демонстрация: 
-
+[![Демонстрация](https://s7.gifyu.com/images/BudgetApp.gif)](https://gifyu.com/image/cNb0)
 ![Демонстрация](https://drive.google.com/file/d/1f1mtmU4cbLyKcjztH-jyVXxnUfoOghHj/view?usp=sharing)
-
-### Send messages + smiles
-![Example work](https://drive.google.com/file/d/1f1mtmU4cbLyKcjztH-jyVXxnUfoOghHj/view?usp=sharing)
-
-
-### Delete messages
-![Example work](https://archakov.im/uploads/ad-socketio-chat-2.gif)
-
-### Search users
-
-![Example work](https://archakov.im/uploads/ad-socketio-chat-3.gif)
 
 #### LICENSE
