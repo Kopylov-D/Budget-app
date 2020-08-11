@@ -18,4 +18,10 @@
 
 ## Демонстрация: 
 [![Демонстрация](https://s7.gifyu.com/images/BudgetApp.gif)](https://gifyu.com/image/cNb0)
+<<<<<<< HEAD
 
+=======
+![Демонстрация](https://drive.google.com/file/d/1f1mtmU4cbLyKcjztH-jyVXxnUfoOghHj/view?usp=sharing)
+
+#### LICENSE
+>>>>>>> a0797cb858e69d25ee50853bb004db7ac65aa2b9
