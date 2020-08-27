@@ -9,11 +9,14 @@ import {
   SET_DATA,
   SUBMIT_INPUT_SET_DATA,
   SET_SECTION,
+  DISABLE_BUTTON,
+  ENABLE_BUTTON
 } from '../actions/actionTypes';
 
 const initialState = {
   currentMonthId: 1,
   isExpenses: true,
+  disabledBtn: false,
   newNameCategory: '',
   categories: [],
   data: [],
@@ -75,6 +78,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isExpenses: !state.isExpenses,
+      };
+    case DISABLE_BUTTON:
+      return {
+        ...state,
+        disabledBtn: true
+      };
+    case ENABLE_BUTTON:
+      return {
+        ...state,
+        disabledBtn: false
       };
     default:
       return state;

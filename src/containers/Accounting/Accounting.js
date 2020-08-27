@@ -148,6 +148,7 @@ class Accounting extends Component {
                 currentMonthId={this.props.currentMonthId}
                 openView={this.state.openView}
                 data={this.props.data}
+                disabled={this.props.disabledBtn}
                 onNameCategoryClick={this.onNameCategoryClickHandler}
                 onDeleteButtonClick={this.onDeleteButtonClickHandler}
               />
@@ -191,6 +192,7 @@ const mapStateToProps = state => {
     loading: state.accounting.loading,
     categories: state.accounting.categories,
     data: state.accounting.data,
+    disabledBtn: state.accounting.disabledBtn
   };
 };
 

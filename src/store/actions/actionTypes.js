@@ -14,4 +14,6 @@ export const ON_MODAL_INPUT = 'ON_MODAL_INPUT';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_DATA = 'SET_DATA';
 export const SET_SECTION = 'SET_SECTION';
+export const DISABLE_BUTTON = 'DISABLE_BUTTON';
+export const ENABLE_BUTTON = 'ENABLE_BUTTON';
 

@@ -4,12 +4,12 @@ import ViewItem from './ViewItem/ViewItem';
 
 import classes from './View.module.css';
 
-const View = (props) => {
+const View = props => {
   return (
     <ul className={classes.View}>
       {props.data && props.openView
         ? props.data
-            .map((data) => {
+            .map(data => {
               if (
                 data &&
                 props.currentMonthId === data.monthId &&
@@ -23,6 +23,7 @@ const View = (props) => {
                       activeCategory={props.activeCategory}
                       date={data.date}
                       amount={data.amount}
+                      disabled={props.disabled}
                       onDeleteButtonClick={props.onDeleteButtonClick}
                     />
                   </div>

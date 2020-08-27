@@ -1,5 +1,4 @@
-import React, {Fragment} from 'react';
-import {CSSTransition} from 'react-transition-group';
+import React, {Fragment, useRef, useEffect} from 'react';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -16,42 +15,42 @@ const Modal = ({
   onDeleteModalClick,
   onKeyPress,
 }) => {
+  const refInput = useRef(null);
+
+  useEffect(() => {
+    refInput.current.focus();
+  }, []);
+
   return (
-    // <CSSTransition
-    //   in={modal.isOpen}
-    //   timeout={200}
-    //   classNames={{
-    //     enter: classes['m-enter'],
-    //     enterActive: classes['m-enter-active'],
-    //     exitActive: classes['m-exit-active'],
-    //   }}
-    //   unmountOnExit
-    // >
-      <Fragment>
-        <div className={classes.Modal}>
-          <label>{modal.title}</label>
-          <form
-            onSubmit={event => {
-              onSubmitModal(event);
-            }}
-          >
-            <Input type={modal.inputType} style={modal.style} onChange={onChangeModal} />
-          </form>
-          <div className={classes.buttons}>
-            <Button type="success" onClick={onOkModalClick}>
-              Ок
-            </Button>
-            <Button type="primary" onClick={onCancelModalClick}>
-              Отмена
-            </Button>
-            <Button type="error" onClick={onDeleteModalClick}>
-              Удалить категорию
-            </Button>
-          </div>
+    <Fragment>
+      <div className={classes.Modal}>
+        <label>{modal.title}</label>
+        <form
+          onSubmit={event => {
+            onSubmitModal(event);
+          }}
+        >
+          <Input
+            refInput={refInput}
+            type={modal.inputType}
+            style={modal.style}
+            onChange={onChangeModal}
+          />
+        </form>
+        <div className={classes.buttons}>
+          <Button type="success" onClick={onOkModalClick}>
+            Ок
+          </Button>
+          <Button type="primary" onClick={onCancelModalClick}>
+            Отмена
+          </Button>
+          <Button type="error" onClick={onDeleteModalClick}>
+            Удалить категорию
+          </Button>
         </div>
-        <Backdrop onClick={onCancelModalClick} onKeyPress={onKeyPress} /> 
-      </Fragment>
-    // </CSSTransition>
+      </div>
+      <Backdrop onClick={onCancelModalClick} onKeyPress={onKeyPress} />
+    </Fragment>
   );
 };
 

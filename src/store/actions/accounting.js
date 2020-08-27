@@ -14,6 +14,8 @@ import {
   SET_CATEGORIES,
   SUBMIT_INPUT_SET_DATA,
   SET_SECTION,
+  DISABLE_BUTTON,
+  ENABLE_BUTTON
 } from './actionTypes';
 
 export function fetchData() {
@@ -193,6 +195,8 @@ export function deleteCategory(categoryId) {
 
 export function deleteItem(id, categoryId) {
   return async (dispatch, setState) => {
+    dispatch(disableBtn());
+
     const state = setState();
     const categories = [...state.accounting.categories];
     let data = [...state.accounting.data];
@@ -219,6 +223,8 @@ export function deleteItem(id, categoryId) {
     try {
       await axios.delete(`/2020/data/${id}.json`);
       dispatch(setData(data));
+      dispatch(enableBtn());
+
     } catch (e) {
       dispatch(fetchError(e));
     }
@@ -229,6 +235,17 @@ export function deleteCategorySetState(item) {
   return {
     type: DELETE_CATEGORY_SET_STATE,
     item,
+  };
+}
+
+export function disableBtn() {
+  return {
+    type: DISABLE_BUTTON,
+  };
+}
+export function enableBtn() {
+  return {
+    type: ENABLE_BUTTON,
   };
 }
 
