@@ -1,6 +1,6 @@
 import axios from '../../axios/axios-expenses';
 
-import { validate } from '../../form/formUtils';
+import {validate} from '../../form/formUtils';
 
 import {
   FETCH_DATA_START,
@@ -17,7 +17,7 @@ import {
 } from './actionTypes';
 
 export function fetchData() {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(fetchDataStart());
     try {
       const response = await axios.get('/2020.json');
@@ -27,7 +27,7 @@ export function fetchData() {
       const data = [];
 
       if (resData.categories) {
-        Object.keys(resData.categories).forEach((key) => {
+        Object.keys(resData.categories).forEach(key => {
           categories.push({
             id: key,
             monthId: resData.categories[key].monthId,
@@ -41,7 +41,7 @@ export function fetchData() {
       }
 
       if (resData.data) {
-        Object.keys(resData.data).forEach((key) => {
+        Object.keys(resData.data).forEach(key => {
           data.push({
             id: key,
             amount: resData.data[key].amount,
@@ -108,7 +108,7 @@ export function submitInput(id, value) {
       dispatch(fetchError(e));
     }
 
-    categories = categories.map((c) => {
+    categories = categories.map(c => {
       if (c.id === id) {
         c.sumCurrent[monthId]
           ? (c.sumCurrent[monthId] += amount)
@@ -117,7 +117,7 @@ export function submitInput(id, value) {
       return c;
     });
 
-    const cat = categories.find((c) => c.id === id);
+    const cat = categories.find(c => c.id === id);
 
     try {
       await axios.patch(`/2020/categories/${id}.json`, cat);
@@ -168,7 +168,7 @@ export function deleteCategory(categoryId) {
     let categories = state.accounting.categories;
     let data = state.accounting.data;
 
-    categories = categories.filter((c) => c.id !== categoryId);
+    categories = categories.filter(c => c.id !== categoryId);
     try {
       await axios.delete(`/2020/categories/${categoryId}.json`);
       dispatch(setCategories(categories));
@@ -177,10 +177,10 @@ export function deleteCategory(categoryId) {
     }
 
     try {
-      data.forEach((d) => {
+      data.forEach(d => {
         if (d.categoryId === categoryId) {
           axios.delete(`/2020/data/${d.id}.json`).then(() => {
-            data = data.filter((d) => d.categoryId !== categoryId);
+            data = data.filter(d => d.categoryId !== categoryId);
             dispatch(setData(data));
           });
         }
@@ -197,10 +197,10 @@ export function deleteItem(id, categoryId) {
     const categories = [...state.accounting.categories];
     let data = [...state.accounting.data];
 
-    const currentDataItem = data.find((d) => d.id === id);
+    const currentDataItem = data.find(d => d.id === id);
     const removeSum = currentDataItem.amount;
     const monthId = currentDataItem.monthId;
-    categories.map((c) => {
+    categories.map(c => {
       if (c.id === categoryId) {
         c.sumCurrent[monthId] -= removeSum;
         try {
@@ -214,7 +214,7 @@ export function deleteItem(id, categoryId) {
       }
     });
 
-    data = data.filter((d) => d.id !== id);
+    data = data.filter(d => d.id !== id);
 
     try {
       await axios.delete(`/2020/data/${id}.json`);
@@ -247,13 +247,12 @@ export function setData(data) {
 }
 
 export function setMonthId(monthId) {
-  return async (dispatch) => {
-    await axios.patch('/2020.json', { currentMonthId: monthId });
-
+  return async dispatch => {
     dispatch({
       type: SET_MONTH_ID,
       monthId,
     });
+    await axios.patch('/2020.json', {currentMonthId: monthId});
   };
 }
 
@@ -271,7 +270,7 @@ export function setNewName(categoryId) {
     const valid = validate(nameCategory, validation);
 
     if (valid) {
-      categories.map((c) => {
+      categories.map(c => {
         if (c.id === categoryId) {
           c.nameCategory = nameCategory;
           try {

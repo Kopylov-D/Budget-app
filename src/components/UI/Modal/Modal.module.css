@@ -32,16 +32,18 @@ label {
 }
 
 .m-enter {
+  transform: translate(-50%, -300px);
   opacity: 0;
+  transition: all 400ms;
 }
+
 .m-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transform: translate(-50%, 0);
 }
-.m-exit {
-  opacity: 1;
-}
+
 .m-exit-active {
+  transform: translate(-50%, -300px);
   opacity: 0;
-  transition: opacity 500ms ease-in;
+  transition: all 400ms;
 }

@@ -34,3 +34,20 @@ header {
   margin: 5px;
   min-height: 150px;
 }
+
+.m-enter {
+  transform: translate(-50%, -400px);
+  opacity: 0;
+  transition: all 400ms;
+}
+
+.m-enter-active {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.m-exit-active {
+  transform: translate(-50%, -400px);
+  opacity: 0;
+  transition: all 400ms;
+}

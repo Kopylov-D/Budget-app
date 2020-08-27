@@ -1,5 +1,5 @@
-import React from 'react';
-import { CSSTransition } from 'react-transition-group';
+import React, {Fragment} from 'react';
+import {CSSTransition} from 'react-transition-group';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -17,12 +17,21 @@ const Modal = ({
   onKeyPress,
 }) => {
   return (
-    <CSSTransition in={modal.isOpen} timeout={0} classNames={classes.m} unmountOnExit>
-      <div>
+    // <CSSTransition
+    //   in={modal.isOpen}
+    //   timeout={200}
+    //   classNames={{
+    //     enter: classes['m-enter'],
+    //     enterActive: classes['m-enter-active'],
+    //     exitActive: classes['m-exit-active'],
+    //   }}
+    //   unmountOnExit
+    // >
+      <Fragment>
         <div className={classes.Modal}>
           <label>{modal.title}</label>
           <form
-            onSubmit={(event) => {
+            onSubmit={event => {
               onSubmitModal(event);
             }}
           >
@@ -40,9 +49,9 @@ const Modal = ({
             </Button>
           </div>
         </div>
-        <Backdrop onClick={onCancelModalClick} onKeyPress={onKeyPress} />
-      </div>
-    </CSSTransition>
+        <Backdrop onClick={onCancelModalClick} onKeyPress={onKeyPress} /> 
+      </Fragment>
+    // </CSSTransition>
   );
 };
 

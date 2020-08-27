@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
@@ -20,6 +20,7 @@ import {
 } from '../../store/actions/accounting';
 
 import classes from './Accounting.module.css';
+import {CSSTransition} from 'react-transition-group';
 
 class Accounting extends Component {
   state = {
@@ -46,20 +47,20 @@ class Accounting extends Component {
     this.props.submitInput(id, value);
   };
 
-  refreshView = (categoryId) => {
+  refreshView = categoryId => {
     this.setState({
       activeCategory: categoryId,
       openView: true,
     });
   };
 
-  onMonthClickHandler = (monthId) => {
+  onMonthClickHandler = monthId => {
     this.props.setMonthId(monthId);
-    this.setState({ openView: false });
+    this.setState({openView: false});
   };
 
-  onNameCategoryClickHandler = (categoryId) => {
-    const modal = { ...this.state.modal };
+  onNameCategoryClickHandler = categoryId => {
+    const modal = {...this.state.modal};
     modal.isOpen = true;
 
     this.setState({
@@ -68,12 +69,12 @@ class Accounting extends Component {
     });
   };
 
-  onChangeModal = (event) => {
+  onChangeModal = event => {
     const newName = event.target.value;
     this.props.onModalInput(newName);
   };
 
-  onSubmitModal = (event) => {
+  onSubmitModal = event => {
     event.preventDefault();
     this.onOkModalClickHandler();
   };
@@ -82,11 +83,11 @@ class Accounting extends Component {
     const categoryId = this.state.activeCategory;
     this.props.setNewName(categoryId);
 
-    this.setState((state) => (state.modal.isOpen = false));
+    this.setState(state => (state.modal.isOpen = false));
   };
 
   onCancelModalClickHandler = () => {
-    this.setState((state) => (state.modal.isOpen = false));
+    this.setState(state => (state.modal.isOpen = false));
   };
 
   onDeleteModalClickHandler = () => {
@@ -102,7 +103,7 @@ class Accounting extends Component {
 
   toggleSection = () => {
     this.props.setSection();
-    this.setState({ openView: false });
+    this.setState({openView: false});
   };
 
   render() {
@@ -110,13 +111,13 @@ class Accounting extends Component {
       <div className={classes.accounting}>
         <nav className={classes.toggle}>
           <div
-            style={this.props.isExpenses ? { background: 'rgba(240, 87, 108, 1)' } : null}
+            style={this.props.isExpenses ? {background: 'rgba(240, 87, 108, 1)'} : null}
             onClick={this.toggleSection}
           >
             Расходы
           </div>
           <div
-            style={this.props.isExpenses ? null : { background: 'rgba(240, 87, 108, 1)' }}
+            style={this.props.isExpenses ? null : {background: 'rgba(240, 87, 108, 1)'}}
             onClick={this.toggleSection}
           >
             Доходы
@@ -157,20 +158,32 @@ class Accounting extends Component {
           </React.Fragment>
         )}
 
-        <Modal
-          modal={this.state.modal}
-          onOkModalClick={this.onOkModalClickHandler}
-          onCancelModalClick={this.onCancelModalClickHandler}
-          onDeleteModalClick={this.onDeleteModalClickHandler}
-          onChangeModal={this.onChangeModal}
-          onSubmitModal={this.onSubmitModal}
-        />
+        <CSSTransition
+          in={this.state.modal.isOpen}
+          timeout={400}
+          classNames={{
+            enter: classes["m-enter"],
+            enterActive: classes["m-enter-active"],
+            exitActive:classes["m-exit-active"]
+        }}
+          mountOnEnter
+          unmountOnExit
+        >
+          <Modal
+            modal={this.state.modal}
+            onOkModalClick={this.onOkModalClickHandler}
+            onCancelModalClick={this.onCancelModalClickHandler}
+            onDeleteModalClick={this.onDeleteModalClickHandler}
+            onChangeModal={this.onChangeModal}
+            onSubmitModal={this.onSubmitModal}
+          />
+        </CSSTransition>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentMonthId: state.accounting.currentMonthId,
     isExpenses: state.accounting.isExpenses,
@@ -181,14 +194,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchData: () => dispatch(fetchData()),
   addInput: () => dispatch(addInput()),
-  deleteCategory: (activeCategory) => dispatch(deleteCategory(activeCategory)),
+  deleteCategory: activeCategory => dispatch(deleteCategory(activeCategory)),
   deleteItem: (id, categoryId) => dispatch(deleteItem(id, categoryId)),
-  setMonthId: (monthId) => dispatch(setMonthId(monthId)),
-  onModalInput: (newName) => dispatch(onModalInput(newName)),
-  setNewName: (categoryId) => dispatch(setNewName(categoryId)),
+  setMonthId: monthId => dispatch(setMonthId(monthId)),
+  onModalInput: newName => dispatch(onModalInput(newName)),
+  setNewName: categoryId => dispatch(setNewName(categoryId)),
   submitInput: (id, value) => dispatch(submitInput(id, value)),
   setSection: () => dispatch(setSection()),
 });
