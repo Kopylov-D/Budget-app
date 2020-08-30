@@ -1,4 +1,4 @@
-import axios from '../../axios/axios-expenses';
+import axios from '../../axios/axios-accounting';
 
 import {validate} from '../../form/formUtils';
 
@@ -15,7 +15,7 @@ import {
   SUBMIT_INPUT_SET_DATA,
   SET_SECTION,
   DISABLE_BUTTON,
-  ENABLE_BUTTON
+  ENABLE_BUTTON,
 } from './actionTypes';
 
 export function fetchData() {
@@ -38,6 +38,7 @@ export function fetchData() {
             sumCurrent: resData.categories[key].sumCurrent
               ? resData.categories[key].sumCurrent
               : {},
+            totalAmount: resData.categories[key].totalAmount,
           });
         });
       }
@@ -115,6 +116,7 @@ export function submitInput(id, value) {
         c.sumCurrent[monthId]
           ? (c.sumCurrent[monthId] += amount)
           : (c.sumCurrent[monthId] = amount);
+        c.totalAmount += amount;
       }
       return c;
     });
@@ -145,6 +147,7 @@ export function addInput() {
       isExpenses: state.accounting.isExpenses,
       nameCategory: 'Новая категория',
       sumCurrent: {},
+      totalAmount: 0,
     };
 
     try {
@@ -207,6 +210,7 @@ export function deleteItem(id, categoryId) {
     categories.map(c => {
       if (c.id === categoryId) {
         c.sumCurrent[monthId] -= removeSum;
+        c.totalAmount -= removeSum;
         try {
           axios.patch(`/2020/categories/${categoryId}.json`, c).then(() => {
             dispatch(setCategories(categories));
@@ -224,7 +228,6 @@ export function deleteItem(id, categoryId) {
       await axios.delete(`/2020/data/${id}.json`);
       dispatch(setData(data));
       dispatch(enableBtn());
-
     } catch (e) {
       dispatch(fetchError(e));
     }

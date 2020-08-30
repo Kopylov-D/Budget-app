@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import { validate } from '../../form/formUtils';
-import { auth } from '../../store/actions/auth';
+import {validate} from '../../form/formUtils';
+import {auth} from '../../store/actions/auth';
 
 import classes from './Auth.module.css';
 
@@ -56,13 +56,13 @@ class Auth extends Component {
     );
   };
 
-  submitHandler = (event) => {
+  submitHandler = event => {
     event.preventDefault();
   };
 
   onChangeHandler = (event, controlName) => {
-    const formControls = { ...this.state.formControls };
-    const control = { ...formControls[controlName] };
+    const formControls = {...this.state.formControls};
+    const control = {...formControls[controlName]};
 
     control.value = event.target.value;
     control.touched = true;
@@ -72,7 +72,7 @@ class Auth extends Component {
 
     let isFormValid = true;
 
-    Object.keys(formControls).forEach((name) => {
+    Object.keys(formControls).forEach(name => {
       isFormValid = formControls[name].valid && isFormValid;
     });
 
@@ -96,7 +96,7 @@ class Auth extends Component {
           label={control.label}
           shouldValidate={!!control.validation}
           errorMessage={control.errorMessage}
-          onChange={(event) => this.onChangeHandler(event, controlName)}
+          onChange={event => this.onChangeHandler(event, controlName)}
         />
       );
     });

@@ -1,0 +1,28 @@
+.stat {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.head div {
+  margin-left: 5px;
+  display: flex;
+}
+
+.main {
+  display: flex;
+  align-self: center;
+  justify-content: space-between;
+  padding: 10px;
+  min-width: 450px;
+}
+
+.main h5 {
+  text-align: center;
+  margin: 5px 0;
+}

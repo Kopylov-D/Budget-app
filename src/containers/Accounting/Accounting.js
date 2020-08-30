@@ -35,6 +35,7 @@ class Accounting extends Component {
 
   componentDidMount() {
     this.props.fetchData();
+    console.log(this.props);
   }
 
   onSubmitHandler = (event, id, valid, value) => {
@@ -153,9 +154,12 @@ class Accounting extends Component {
                 onDeleteButtonClick={this.onDeleteButtonClickHandler}
               />
             </div>
-            <Button type="primary" onClick={this.props.addInput}>
-              Добавить
-            </Button>
+            <div className={classes.footer}>
+              <Button type="primary" onClick={this.props.addInput}>
+                Добавить
+              </Button>
+              <div class="material-icons">account_balance_wallet</div>
+            </div>
           </React.Fragment>
         )}
 
@@ -163,10 +167,10 @@ class Accounting extends Component {
           in={this.state.modal.isOpen}
           timeout={400}
           classNames={{
-            enter: classes["m-enter"],
-            enterActive: classes["m-enter-active"],
-            exitActive:classes["m-exit-active"]
-        }}
+            enter: classes['m-enter'],
+            enterActive: classes['m-enter-active'],
+            exitActive: classes['m-exit-active'],
+          }}
           mountOnEnter
           unmountOnExit
         >
@@ -192,7 +196,7 @@ const mapStateToProps = state => {
     loading: state.accounting.loading,
     categories: state.accounting.categories,
     data: state.accounting.data,
-    disabledBtn: state.accounting.disabledBtn
+    disabledBtn: state.accounting.disabledBtn,
   };
 };
 

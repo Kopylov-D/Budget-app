@@ -20,6 +20,7 @@ const initialState = {
   newNameCategory: '',
   categories: [],
   data: [],
+  // statData: {}
 };
 
 export default (state = initialState, action) => {

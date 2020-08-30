@@ -1,12 +1,5 @@
 .accounting {
-  height: max-content;
-  max-width: 100%;
-  background: #eee;
-  border-radius: 5px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-  color: black;
   padding: 0 0 5px 0;
-  margin-top: 10px;
 }
 
 .toggle {
@@ -33,6 +26,15 @@ header {
   align-items: flex-start;
   margin: 5px;
   min-height: 150px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer>div{
+  padding-right: 20px;
 }
 
 .m-enter {
