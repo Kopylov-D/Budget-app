@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import {validate} from '../../form/formUtils';
+import {validate} from '../../utils/formUtils';
 import {auth} from '../../store/actions/auth';
 
 import classes from './Auth.module.css';

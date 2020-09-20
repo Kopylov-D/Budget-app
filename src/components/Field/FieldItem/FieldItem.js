@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import Input from '../../UI/Input/Input';
-import {createControl, validate} from '../../../form/formUtils';
+import {createControl, validate} from '../../../utils/formUtils';
 
 import classes from './FieldItem.module.css';
 

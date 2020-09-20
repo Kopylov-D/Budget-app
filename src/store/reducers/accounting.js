@@ -10,7 +10,8 @@ import {
   SUBMIT_INPUT_SET_DATA,
   SET_SECTION,
   DISABLE_BUTTON,
-  ENABLE_BUTTON
+  ENABLE_BUTTON,
+  SET_BALANCE
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   newNameCategory: '',
   categories: [],
   data: [],
+  balance: 0
   // statData: {}
 };
 
@@ -38,6 +40,7 @@ export default (state = initialState, action) => {
         data: action.data,
         currentMonthId: action.currentMonthId,
         isExpenses: action.isExpenses,
+        balance: action.balance
       };
     case FETCH_ERROR:
       return {
@@ -89,6 +92,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         disabledBtn: false
+      };
+    case SET_BALANCE:
+      return {
+        ...state,
+        balance: action.balance
       };
     default:
       return state;

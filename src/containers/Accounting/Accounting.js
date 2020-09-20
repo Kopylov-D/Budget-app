@@ -35,7 +35,6 @@ class Accounting extends Component {
 
   componentDidMount() {
     this.props.fetchData();
-    console.log(this.props);
   }
 
   onSubmitHandler = (event, id, valid, value) => {
@@ -158,7 +157,11 @@ class Accounting extends Component {
               <Button type="primary" onClick={this.props.addInput}>
                 Добавить
               </Button>
-              <div class="material-icons">account_balance_wallet</div>
+              <div>
+                <span>Баланс</span>
+                <span>{this.props.balance}</span>
+                <div class="material-icons">account_balance_wallet</div>
+              </div>
             </div>
           </React.Fragment>
         )}
@@ -197,6 +200,7 @@ const mapStateToProps = state => {
     categories: state.accounting.categories,
     data: state.accounting.data,
     disabledBtn: state.accounting.disabledBtn,
+    balance: state.accounting.balance,
   };
 };
 

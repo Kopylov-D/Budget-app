@@ -4,8 +4,6 @@ import FieldItem from './FieldItem/FieldItem';
 
 import classes from './Field.module.css';
 
-let sum = 0;
-
 const Field = props => {
   return (
     <div>
@@ -28,7 +26,7 @@ const Field = props => {
           } else return null;
         })}
       </div>
-      <div>Итого: {sum}</div>
+      {/* <div>Итого: {sum}</div> */}
     </div>
   );
 };

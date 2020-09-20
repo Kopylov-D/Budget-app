@@ -34,7 +34,7 @@ class App extends Component {
           {/* <Route path="/info" component={Info} /> */}
           <Route path="/logout" component={Logout} />
 
-          <Redirect to="/stat" />
+          <Redirect to="/" />
         </Switch>
       );
     }
