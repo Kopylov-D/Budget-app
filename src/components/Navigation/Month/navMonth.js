@@ -19,7 +19,7 @@ const months = [
   'ДЕК',
 ];
 
-const Month = (props) => {
+const Month = props => {
   const renderMonths = () => {
     return months.map((month, index) => {
       return (

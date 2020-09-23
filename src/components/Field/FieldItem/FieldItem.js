@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import Input from '../../UI/Input/Input';
-import { createControl, validate } from '../../../form/formUtils';
+import {createControl, validate} from '../../../utils/formUtils';
 
 import classes from './FieldItem.module.css';
 
-const FieldItem = (props) => {
+const FieldItem = props => {
   const [control, setControl] = useState(
-    createControl(
-      { noErrorMessage: true },
-      { required: true, isNumber: true, notNull: true }
-    )
+    createControl({noErrorMessage: true}, {required: true, isNumber: true, notNull: true})
   );
 
-  const onKeyEnter = (event) => {
+  const onKeyEnter = event => {
     if (event.key !== 'Enter') {
       return;
     } else {
@@ -36,7 +33,7 @@ const FieldItem = (props) => {
         {props.nameCategory}
       </div>
       <form
-        onSubmit={(event) => {
+        onSubmit={event => {
           props.onSubmit(event, props.id, control.valid, control.value);
         }}
       >
@@ -50,9 +47,8 @@ const FieldItem = (props) => {
           onClick={() => props.onClick(props.id)}
         />
       </form>
-      <div>{props.currentInput}</div>
-      <div className={classes.sum}>cумма</div>&nbsp;
-      <div>{props.sumCurrent}</div>
+      <div>{props.currentInput}</div>&nbsp;
+      <div>{props.sumCurrent ? props.sumCurrent : 0}</div>
     </div>
   );
 };

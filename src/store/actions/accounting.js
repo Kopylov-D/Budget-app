@@ -1,6 +1,6 @@
-import axios from '../../axios/axios-expenses';
+import axios from '../../axios/axios-accounting';
 
-import {validate} from '../../form/formUtils';
+import {validate} from '../../utils/formUtils';
 
 import {
   FETCH_DATA_START,
@@ -15,7 +15,8 @@ import {
   SUBMIT_INPUT_SET_DATA,
   SET_SECTION,
   DISABLE_BUTTON,
-  ENABLE_BUTTON
+  ENABLE_BUTTON,
+  SET_BALANCE,
 } from './actionTypes';
 
 export function fetchData() {
@@ -38,6 +39,7 @@ export function fetchData() {
             sumCurrent: resData.categories[key].sumCurrent
               ? resData.categories[key].sumCurrent
               : {},
+            totalAmount: resData.categories[key].totalAmount,
           });
         });
       }
@@ -56,8 +58,9 @@ export function fetchData() {
 
       const currentMonthId = resData.currentMonthId;
       const isExpenses = resData.isExpenses;
+      const balance = resData.balance;
 
-      dispatch(fetchDataSuccess(categories, data, currentMonthId, isExpenses));
+      dispatch(fetchDataSuccess(categories, data, currentMonthId, isExpenses, balance));
     } catch (e) {
       dispatch(fetchError(e));
     }
@@ -70,13 +73,14 @@ export function fetchDataStart() {
   };
 }
 
-export function fetchDataSuccess(categories, data, currentMonthId, isExpenses) {
+export function fetchDataSuccess(categories, data, currentMonthId, isExpenses, balance) {
   return {
     type: FETCH_DATA_SUCCESS,
     categories,
     data,
     currentMonthId,
     isExpenses,
+    balance,
   };
 }
 
@@ -93,6 +97,8 @@ export function submitInput(id, value) {
 
     let categories = state.accounting.categories;
     const monthId = state.accounting.currentMonthId;
+    let balance = state.accounting.balance;
+
     const amount = +value;
 
     const newData = {
@@ -110,14 +116,31 @@ export function submitInput(id, value) {
       dispatch(fetchError(e));
     }
 
+    let isExpenses;
+
     categories = categories.map(c => {
       if (c.id === id) {
+        isExpenses = c.isExpenses;
         c.sumCurrent[monthId]
           ? (c.sumCurrent[monthId] += amount)
           : (c.sumCurrent[monthId] = amount);
+        c.totalAmount += amount;
       }
       return c;
     });
+
+    if (isExpenses) {
+      balance -= amount;
+    } else {
+      balance += amount;
+    }
+
+    try {
+      await axios.put(`/2020/balance.json`, balance);
+      dispatch(setBalance(balance));
+    } catch (e) {
+      dispatch(fetchError(e));
+    }
 
     const cat = categories.find(c => c.id === id);
 
@@ -145,6 +168,7 @@ export function addInput() {
       isExpenses: state.accounting.isExpenses,
       nameCategory: 'Новая категория',
       sumCurrent: {},
+      totalAmount: 0,
     };
 
     try {
@@ -200,13 +224,19 @@ export function deleteItem(id, categoryId) {
     const state = setState();
     const categories = [...state.accounting.categories];
     let data = [...state.accounting.data];
+    let balance = state.accounting.balance;
 
     const currentDataItem = data.find(d => d.id === id);
     const removeSum = currentDataItem.amount;
     const monthId = currentDataItem.monthId;
+
+    let isExpenses;
+
     categories.map(c => {
       if (c.id === categoryId) {
+        isExpenses = c.isExpenses;
         c.sumCurrent[monthId] -= removeSum;
+        c.totalAmount -= removeSum;
         try {
           axios.patch(`/2020/categories/${categoryId}.json`, c).then(() => {
             dispatch(setCategories(categories));
@@ -224,7 +254,19 @@ export function deleteItem(id, categoryId) {
       await axios.delete(`/2020/data/${id}.json`);
       dispatch(setData(data));
       dispatch(enableBtn());
+    } catch (e) {
+      dispatch(fetchError(e));
+    }
 
+    if (isExpenses) {
+      balance += removeSum;
+    } else {
+      balance -= removeSum;
+    }
+
+    try {
+      await axios.put(`/2020/balance.json`, balance);
+      dispatch(setBalance(balance));
     } catch (e) {
       dispatch(fetchError(e));
     }
@@ -316,5 +358,12 @@ export function onModalInput(newName) {
 export function setSection() {
   return {
     type: SET_SECTION,
+  };
+}
+
+export function setBalance(balance) {
+  return {
+    type: SET_BALANCE,
+    balance,
   };
 }

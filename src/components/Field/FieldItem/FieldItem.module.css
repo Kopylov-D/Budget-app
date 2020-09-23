@@ -1,15 +1,11 @@
 .FieldItem {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   max-width: 350px;
-  margin: 0;
+  margin-right: 15px;
 }
 
 .FieldItemName {
   width: 180px;
   cursor: pointer;
-}
-
-.sum {
-  padding-left: 5px;
 }

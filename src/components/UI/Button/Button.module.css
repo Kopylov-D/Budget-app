@@ -25,25 +25,24 @@
 .Button:disabled {
   background: #ccc;
   color: #000;
-  /* cursor: not-allowed; */
 }
 
 .error {
-  background: rgba(240, 87, 108, 1);
+  background: #931a25;
   color: #fff;
 }
 
 .success {
-  background: rgba(161, 240, 69, 1);
+  background: #8fc0a9;
 }
 
 .primary {
-  background: #2884f6;
+  background: #283c63;
   color: #fff;
 }
 
 .delete {
   padding: 2px 2px;
-  background: rgba(240, 87, 108, 1);
+  background: #931a25;
   color: #fff;
 }

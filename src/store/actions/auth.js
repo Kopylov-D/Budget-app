@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { AUTH_SUCCESS, AUTH_LOGOUT } from './actionTypes';
+import {AUTH_SUCCESS, AUTH_LOGOUT} from './actionTypes';
 
 export function auth(email, password, isLogin) {
-  return async (dispatch) => {
+  return async dispatch => {
     const authData = {
       email,
       password,
@@ -20,8 +20,6 @@ export function auth(email, password, isLogin) {
     const response = await axios.post(url, authData);
     const data = response.data;
 
-    console.log(data);
-
     const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000);
 
     localStorage.setItem('token', data.idToken);
@@ -34,7 +32,7 @@ export function auth(email, password, isLogin) {
 }
 
 export function autoLogout(time) {
-  return (dispatch) => {
+  return dispatch => {
     setTimeout(() => {
       dispatch(logout());
     }, time * 1000);
@@ -51,7 +49,7 @@ export function logout() {
 }
 
 export function autoLogin() {
-  return (dispatch) => {
+  return dispatch => {
     const token = localStorage.getItem('token');
     if (!token) {
       dispatch(logout());

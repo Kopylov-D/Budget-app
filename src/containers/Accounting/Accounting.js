@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {CSSTransition} from 'react-transition-group';
 
 import Field from '../../components/Field/Field';
 import View from '../../components/View/View';
@@ -20,7 +21,6 @@ import {
 } from '../../store/actions/accounting';
 
 import classes from './Accounting.module.css';
-import {CSSTransition} from 'react-transition-group';
 
 class Accounting extends Component {
   state = {
@@ -111,13 +111,13 @@ class Accounting extends Component {
       <div className={classes.accounting}>
         <nav className={classes.toggle}>
           <div
-            style={this.props.isExpenses ? {background: 'rgba(240, 87, 108, 1)'} : null}
+            style={this.props.isExpenses ? {background: '#ffaaa5'} : null}
             onClick={this.toggleSection}
           >
             Расходы
           </div>
           <div
-            style={this.props.isExpenses ? null : {background: 'rgba(240, 87, 108, 1)'}}
+            style={this.props.isExpenses ? null : {background: '#ffaaa5'}}
             onClick={this.toggleSection}
           >
             Доходы
@@ -153,9 +153,16 @@ class Accounting extends Component {
                 onDeleteButtonClick={this.onDeleteButtonClickHandler}
               />
             </div>
-            <Button type="primary" onClick={this.props.addInput}>
-              Добавить
-            </Button>
+            <div className={classes.footer}>
+              <Button type="primary" onClick={this.props.addInput}>
+                Добавить
+              </Button>
+              <div>
+                <span>Баланс</span>
+                <span>{this.props.balance}</span>
+                <div className="material-icons">account_balance_wallet</div>
+              </div>
+            </div>
           </React.Fragment>
         )}
 
@@ -163,10 +170,10 @@ class Accounting extends Component {
           in={this.state.modal.isOpen}
           timeout={400}
           classNames={{
-            enter: classes["m-enter"],
-            enterActive: classes["m-enter-active"],
-            exitActive:classes["m-exit-active"]
-        }}
+            enter: classes['m-enter'],
+            enterActive: classes['m-enter-active'],
+            exitActive: classes['m-exit-active'],
+          }}
           mountOnEnter
           unmountOnExit
         >
@@ -192,7 +199,8 @@ const mapStateToProps = state => {
     loading: state.accounting.loading,
     categories: state.accounting.categories,
     data: state.accounting.data,
-    disabledBtn: state.accounting.disabledBtn
+    disabledBtn: state.accounting.disabledBtn,
+    balance: state.accounting.balance,
   };
 };
 

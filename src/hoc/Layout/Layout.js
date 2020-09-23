@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 import classes from './Layout.module.css';
 
@@ -10,9 +10,12 @@ class Layout extends React.Component {
       <div className={classes.Layout}>
         <header className={classes.header}>
           <nav>
-            <h1>Budget App</h1>
+            <h1>Budget</h1>
             <NavLink to="/" exact activeClassName={classes.active}>
               Финансы
+            </NavLink>
+            <NavLink to="/stat" activeClassName={classes.active}>
+              Статистика
             </NavLink>
             <NavLink to="/info" activeClassName={classes.active}>
               Инфо

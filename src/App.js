@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import Accounting from './containers/Accounting/Accounting';
 import Auth from './containers/Auth/Auth';
 import Logout from './components/Logout/Logout';
 import Info from './containers/Info/Info';
+import Stat from './containers/Stat/Stat';
 
-import { autoLogin } from './store/actions/auth';
+import {autoLogin} from './store/actions/auth';
 
 class App extends Component {
   componentDidMount() {
@@ -29,6 +30,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/" exact component={Accounting} />
+          <Route path="/stat" component={Stat} />
           <Route path="/info" component={Info} />
           <Route path="/logout" component={Logout} />
 
