@@ -2,11 +2,11 @@ import React from 'react';
 
 import classes from './Input.module.css';
 
-function isInvalid({ valid, touched, shouldValidate, noErrorMessage }) {
+function isInvalid({valid, touched, shouldValidate, noErrorMessage}) {
   return !valid && shouldValidate && touched && !noErrorMessage;
 }
 
-const Input = (props) => {
+const Input = props => {
   const inputType = props.type || 'text';
   const cls = [classes.Input, classes[props.style]];
   const htmlFor = `${inputType}-${Math.random()}`;
@@ -28,9 +28,7 @@ const Input = (props) => {
         onKeyPress={props.onKeyPress}
       />
 
-      {isInvalid(props) ? (
-        <span>{props.errorMessage || 'Неверное значение'}</span>
-      ) : null}
+      {isInvalid(props) ? <span>{props.errorMessage || 'Неверное значение'}</span> : null}
     </div>
   );
 };

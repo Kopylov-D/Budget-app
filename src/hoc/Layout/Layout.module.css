@@ -20,11 +20,6 @@
   align-items: baseline;
 }
 
-.header :only-child:hover {
-  cursor: pointer;
-  color: rgba(240, 87, 108, 1);
-}
-
 main {
   height: max-content;
   max-width: 100%;
@@ -32,7 +27,6 @@ main {
   border-radius: 5px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
   color: black;
-  /* padding: 5px; */
   margin-top: 10px;
 }
 
@@ -42,6 +36,10 @@ a {
   font-size: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
+}
+
+a:hover {
+  color: #ffaaa5;
 }
 
 a.active {

@@ -11,7 +11,7 @@ import {
   SET_SECTION,
   DISABLE_BUTTON,
   ENABLE_BUTTON,
-  SET_BALANCE
+  SET_BALANCE,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -21,8 +21,7 @@ const initialState = {
   newNameCategory: '',
   categories: [],
   data: [],
-  balance: 0
-  // statData: {}
+  balance: 0,
 };
 
 export default (state = initialState, action) => {
@@ -40,7 +39,7 @@ export default (state = initialState, action) => {
         data: action.data,
         currentMonthId: action.currentMonthId,
         isExpenses: action.isExpenses,
-        balance: action.balance
+        balance: action.balance,
       };
     case FETCH_ERROR:
       return {
@@ -86,17 +85,17 @@ export default (state = initialState, action) => {
     case DISABLE_BUTTON:
       return {
         ...state,
-        disabledBtn: true
+        disabledBtn: true,
       };
     case ENABLE_BUTTON:
       return {
         ...state,
-        disabledBtn: false
+        disabledBtn: false,
       };
     case SET_BALANCE:
       return {
         ...state,
-        balance: action.balance
+        balance: action.balance,
       };
     default:
       return state;

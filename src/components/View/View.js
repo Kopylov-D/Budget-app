@@ -16,17 +16,15 @@ const View = props => {
                 props.activeCategory === data.categoryId
               ) {
                 return (
-                  <div>
-                    <ViewItem
-                      key={data.id}
-                      id={data.id}
-                      activeCategory={props.activeCategory}
-                      date={data.date}
-                      amount={data.amount}
-                      disabled={props.disabled}
-                      onDeleteButtonClick={props.onDeleteButtonClick}
-                    />
-                  </div>
+                  <ViewItem
+                    key={data.id}
+                    id={data.id}
+                    activeCategory={props.activeCategory}
+                    date={data.date}
+                    amount={data.amount}
+                    disabled={props.disabled}
+                    onDeleteButtonClick={props.onDeleteButtonClick}
+                  />
                 );
               } else {
                 return null;

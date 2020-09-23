@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 
 import classes from './BackDrop.module.css';
 
-const Backdrop = ({ onClick }) => {
+const Backdrop = ({onClick}) => {
   useEffect(() => {
-    const onKeypress = (e) => {
-      if (e.key === 'Escape') {
+    const onKeypress = event => {
+      if (event.key === 'Escape') {
         onClick();
       }
     };

@@ -1,9 +1,9 @@
 import {FETCH_DATA_START, FETCH_DATA_SUCCESS, FETCH_ERROR} from '../actions/actionTypes';
 
 const initialState = {
-  loading: false,
   categories: [],
   data: [],
+  proportion: {expenses: 0, income: 0},
 };
 
 export default (state = initialState, action) => {
@@ -19,7 +19,8 @@ export default (state = initialState, action) => {
         categories: action.categories,
         data: action.data,
         isExpenses: action.isExpenses,
-
+        loading: false,
+        proportion: action.proportion,
       };
     case FETCH_ERROR:
       return {

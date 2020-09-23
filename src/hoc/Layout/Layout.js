@@ -10,15 +10,15 @@ class Layout extends React.Component {
       <div className={classes.Layout}>
         <header className={classes.header}>
           <nav>
-            <h1>Budget App</h1>
+            <h1>Budget</h1>
             <NavLink to="/" exact activeClassName={classes.active}>
-              <span className="material-icons">payments</span>Ф
+              Финансы
             </NavLink>
             <NavLink to="/stat" activeClassName={classes.active}>
-              <span className="material-icons">analytics С</span>
+              Статистика
             </NavLink>
             <NavLink to="/info" activeClassName={classes.active}>
-              <span className="material-icons">live_help</span> И
+              Инфо
             </NavLink>
           </nav>
 

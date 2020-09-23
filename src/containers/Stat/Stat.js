@@ -1,39 +1,39 @@
-import React, {useEffect} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {connect} from 'react-redux';
 
-import classes from './Stat.module.css';
 import CategoryList from '../../components/CategoryList/CategoryList';
+import Chart from '../../components/UI/Chart/Chart';
+import Loader from '../../components/UI/Loader/Loader';
 
 import {fetchData} from '../../store/actions/stat';
+
+import classes from './Stat.module.css';
 
 export const Stat = props => {
   useEffect(() => {
     props.fetchData();
   }, []);
 
-  console.log(props.categories);
-
   return (
     <div className={classes.stat}>
-      <nav className={classes.head}>
-        <div>2020</div>
-        <div className={classes.menu}>
-          <div>Анализ</div>
-          <div>Категории</div>
-          <div>Общее</div>
-          <div>Диаграмма</div>
-        </div>
-      </nav>
-      <div className={classes.main}>
-        <div>
-          <h5>Расходы</h5>
-          <CategoryList categories={props.categories} isExpenses={true} />
-        </div>
-        <div>
-          <h5>Доходы</h5>
-          <CategoryList categories={props.categories} isExpenses={false} />
-        </div>
-      </div>
+      {props.loading ? (
+        <Loader />
+      ) : (
+        <Fragment>
+          <Chart proportion={props.proportion} />
+
+          <div className={classes.main}>
+            <div>
+              <h3>Расходы</h3>
+              <CategoryList categories={props.categories} isExpenses={true} />
+            </div>
+            <div>
+              <h3>Доходы</h3>
+              <CategoryList categories={props.categories} isExpenses={false} />
+            </div>
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 };
@@ -41,6 +41,9 @@ export const Stat = props => {
 const mapStateToProps = state => ({
   categories: state.stat.categories,
   data: state.stat.data,
+  loading: state.stat.loading,
+  proportion: state.stat.proportion,
+  state: state,
 });
 
 const mapDispatchToProps = dispatch => ({

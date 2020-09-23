@@ -1,28 +1,18 @@
 .stat {
-  padding: 5px;
   display: flex;
   flex-direction: column;
-}
-
-.head {
-  display: flex;
-  justify-content: space-between;
-}
-
-.head div {
-  margin-left: 5px;
-  display: flex;
 }
 
 .main {
   display: flex;
   align-self: center;
   justify-content: space-between;
-  padding: 10px;
+  padding-bottom: 10px;
   min-width: 450px;
 }
 
-.main h5 {
+.main h3 {
   text-align: center;
-  margin: 5px 0;
+  margin: 10px 0;
+  font-weight: 400;
 }

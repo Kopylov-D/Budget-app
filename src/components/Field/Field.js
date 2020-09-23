@@ -10,7 +10,6 @@ const Field = props => {
       <div className={classes.Field}>
         {props.categories.map(category => {
           if (props.isExpenses === category.isExpenses) {
-
             return (
               <FieldItem
                 key={'key' + category.id}
@@ -26,7 +25,6 @@ const Field = props => {
           } else return null;
         })}
       </div>
-      {/* <div>Итого: {sum}</div> */}
     </div>
   );
 };

@@ -47,9 +47,8 @@ const FieldItem = props => {
           onClick={() => props.onClick(props.id)}
         />
       </form>
-      <div>{props.currentInput}</div>
-      <div className={classes.sum}>cумма</div>&nbsp;
-      <div>{props.sumCurrent}</div>
+      <div>{props.currentInput}</div>&nbsp;
+      <div>{props.sumCurrent ? props.sumCurrent : 0}</div>
     </div>
   );
 };

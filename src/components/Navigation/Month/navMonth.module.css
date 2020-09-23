@@ -1,7 +1,5 @@
 .Month {
-    display: flex;
-    cursor: pointer;
-    justify-content: space-around;
+  display: flex;
+  cursor: pointer;
+  justify-content: space-around;
 }
-
-

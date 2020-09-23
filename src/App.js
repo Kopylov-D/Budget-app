@@ -31,7 +31,7 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Accounting} />
           <Route path="/stat" component={Stat} />
-          {/* <Route path="/info" component={Info} /> */}
+          <Route path="/info" component={Info} />
           <Route path="/logout" component={Logout} />
 
           <Redirect to="/" />

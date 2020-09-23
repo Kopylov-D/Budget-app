@@ -1,0 +1,19 @@
+.chart {
+  width: inherit;
+  display: flex;
+  height: 25px;
+}
+
+.expenses {
+  height: 25px;
+  background: #ffaaa5;
+  border-radius: 5px 0 0 0;
+  text-align: center;
+}
+
+.income {
+  height: 25px;
+  background: #a8e6cf;
+  border-radius: 0 5px 0 0;
+  text-align: center;
+}

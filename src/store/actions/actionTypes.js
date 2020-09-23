@@ -17,4 +17,3 @@ export const SET_SECTION = 'SET_SECTION';
 export const DISABLE_BUTTON = 'DISABLE_BUTTON';
 export const ENABLE_BUTTON = 'ENABLE_BUTTON';
 export const SET_BALANCE = 'SET_BALANCE';
-

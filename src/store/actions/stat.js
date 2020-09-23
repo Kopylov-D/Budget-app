@@ -1,6 +1,21 @@
 import {FETCH_DATA_START, FETCH_DATA_SUCCESS, FETCH_ERROR} from './actionTypes';
 import axios from '../../axios/axios-stat';
 
+const findSum = arr => {
+  const proportion = {
+    expenses: 0,
+    income: 0,
+  };
+  arr.forEach(item => {
+    if (item.isExpenses) {
+      proportion.expenses += item.totalAmount;
+    } else {
+      proportion.income += item.totalAmount;
+    }
+  });
+  return proportion;
+};
+
 export function fetchData() {
   return async dispatch => {
     dispatch(fetchDataStart());
@@ -25,7 +40,6 @@ export function fetchData() {
           });
         });
       }
-
       if (resData.data) {
         Object.keys(resData.data).forEach(key => {
           data.push({
@@ -40,8 +54,11 @@ export function fetchData() {
 
       const currentMonthId = resData.currentMonthId;
       const isExpenses = resData.isExpenses;
+      const proportion = findSum(categories);
 
-      dispatch(fetchDataSuccess(categories, data, currentMonthId, isExpenses));
+      dispatch(
+        fetchDataSuccess(categories, data, currentMonthId, isExpenses, proportion)
+      );
     } catch (e) {
       dispatch(fetchError(e));
     }
@@ -54,13 +71,20 @@ export function fetchDataStart() {
   };
 }
 
-export function fetchDataSuccess(categories, data, currentMonthId, isExpenses) {
+export function fetchDataSuccess(
+  categories,
+  data,
+  currentMonthId,
+  isExpenses,
+  proportion
+) {
   return {
     type: FETCH_DATA_SUCCESS,
     categories,
     data,
     currentMonthId,
     isExpenses,
+    proportion,
   };
 }
 
